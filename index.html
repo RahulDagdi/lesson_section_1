@@ -1,0 +1,2081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chapter 1: Safety and Housekeeping</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500;9..40,700;9..40,800&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<style>
+:root{
+  --bg:#EEF1F4; --panel:#FFFFFF; --panel-2:#F5F7F9; --ink:#17212B; --muted:#586674; --line:#D8DFE5;
+  --side:#102A44; --side-2:#16344F; --side-ink:#E8F0F7; --side-muted:#93ABC0; --side-line:#21405E;
+  --bp:#11375C; --bp-2:#0D2D4C; --bp-line:#E6EFF7; --bp-dim:#7FA3C4; --bp-grid:rgba(230,239,247,.07);
+  --yellow:#F7C307; --orange:#E89519; --amber:#F7A70C; --red:#E8573F; --green:#3DBB7E; --water:#3E8FC7;
+  --on-yellow:#1E1A10;
+  --display:"DM Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --sans:"Work Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F1923; --panel:#16222D; --panel-2:#1C2935; --ink:#E8EEF3; --muted:#9AABB9; --line:#253545;
+  --side:#0B1E31; --side-2:#12293F; --side-line:#1B3550; color-scheme:dark;}}
+:root[data-theme="dark"]{--bg:#0F1923; --panel:#16222D; --panel-2:#1C2935; --ink:#E8EEF3; --muted:#9AABB9; --line:#253545;
+  --side:#0B1E31; --side-2:#12293F; --side-line:#1B3550; color-scheme:dark;}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16.5px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+button{font:inherit;color:inherit}
+h1,h2,h3{font-family:var(--display);margin:0}
+
+/* ---------- layout ---------- */
+.app{display:grid;grid-template-columns:clamp(280px,25vw,340px) minmax(0,1fr);min-height:100vh;min-height:100dvh}
+.side{position:sticky;top:0;height:100vh;height:100dvh;overflow-y:auto;background:var(--side);color:var(--side-ink);padding:22px 0 40px}
+.side-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:0 22px 18px;border-bottom:1px solid var(--side-line)}
+.side-top h2{font:700 15px/1.35 var(--display);color:var(--side-ink)}
+.side-top h2 span{display:block;color:var(--yellow);font-size:13px;margin-bottom:4px}
+.side-close{display:none;flex:none;width:36px;height:36px;border:1px solid var(--side-line);background:none;color:var(--side-ink);font-size:24px;line-height:1;cursor:pointer}
+.ls{border-bottom:1px solid var(--side-line)}
+.ls-btn{width:100%;display:grid;grid-template-columns:36px 1fr;gap:10px;align-items:start;padding:16px 22px;border:0;background:none;text-align:left;cursor:pointer}
+.ls-btn:hover{background:var(--side-2)}
+.ls-no{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font:800 14px var(--display);background:var(--side-2);color:var(--side-muted)}
+.ls-t{font:700 15px/1.3 var(--display)}
+.ls-t small{display:block;margin-top:3px;font:500 13px/1.35 var(--sans);color:var(--side-muted)}
+.ls.on .ls-no{background:var(--yellow);color:var(--on-yellow)}
+.ls.done .ls-no{background:var(--green);color:#fff}
+.pts{list-style:none;margin:0;padding:0 14px 14px 68px;display:none}
+.ls.on .pts{display:block}
+.pt{width:100%;border:0;background:none;text-align:left;cursor:pointer;padding:7px 10px;border-radius:8px;font:400 13.5px/1.4 var(--sans);color:var(--side-muted);display:grid;grid-template-columns:18px 1fr;gap:6px}
+.pt::before{content:"";width:8px;height:8px;margin-top:6px;border-radius:50%;border:2px solid var(--side-muted)}
+.pt:hover{color:var(--side-ink)}
+.pt.seen{color:var(--side-ink)}
+.pt.seen::before{background:var(--side-muted)}
+.pt.now{color:var(--side-ink);background:var(--side-2);font-weight:600}
+.pt.now::before{border-color:var(--yellow);background:var(--yellow)}
+.scrim{display:none}
+.col{min-width:0;display:flex;flex-direction:column}
+.mbar{display:none}
+main{width:100%;max-width:1280px;margin:0 auto;padding:clamp(20px,3vw,36px) clamp(16px,3vw,44px) 56px}
+
+/* ---------- lesson header ---------- */
+.heads hgroup{margin-bottom:clamp(14px,2vw,22px)}
+.heads hgroup[hidden]{display:none}
+.l-code{margin:0 0 6px;font:700 15px/1 var(--display);color:var(--orange)}
+.heads h1{font-weight:800;font-size:clamp(26px,3.2vw,42px);line-height:1.08;letter-spacing:-.025em}
+.l-sub{margin:8px 0 0;font:500 clamp(15px,1.3vw,17px)/1.4 var(--sans);color:var(--muted)}
+
+/* ---------- player ---------- */
+.player{width:100%;max-width:max(300px,calc((100vh - 70px - 40px) * 16 / 9));max-width:max(300px,calc((100dvh - 70px - 40px) * 16 / 9))}
+.stage{position:relative;background:var(--bp);border-radius:16px;overflow:hidden;scroll-margin-top:12px;box-shadow:0 30px 60px -36px rgba(8,30,52,.6)}
+.lsvg{display:block;width:100%;height:auto;aspect-ratio:16/9}
+.lsvg[hidden]{display:none}
+.tblock{position:absolute;right:14px;bottom:76px;display:grid;grid-template-columns:auto auto;border:1.5px solid var(--bp-dim);font:500 11.5px/1.2 var(--display);color:var(--bp-line);background:rgba(13,45,76,.85)}
+.tblock span{padding:5px 9px;border-right:1.5px solid var(--bp-dim);border-bottom:1.5px solid var(--bp-dim)}
+.tblock span:nth-child(2n){border-right:0}
+.tblock span:nth-last-child(-n+2){border-bottom:0}
+.tblock b{font-weight:700;color:var(--yellow)}
+.start{position:absolute;inset:0 0 62px;display:grid;place-items:center;border:0;background:rgba(13,45,76,.35);cursor:pointer}
+.start[hidden]{display:none}
+.start span{display:flex;align-items:center;gap:10px;padding:16px 26px;border-radius:999px;background:var(--yellow);color:var(--on-yellow);font:700 16px/1 var(--display);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.start svg{width:18px;height:18px}
+.endcard{position:absolute;inset:0 0 62px;display:grid;place-items:center;background:rgba(13,45,76,.9)}
+.endcard[hidden]{display:none}
+.endbox{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;color:var(--bp-line);padding:20px}
+.endbox .k{width:60px;height:60px;border-radius:50%;display:grid;place-items:center;background:var(--green);color:#fff;font:800 28px var(--display)}
+.endbox strong{font:700 22px/1.2 var(--display)}
+.pill{border:0;border-radius:999px;padding:12px 20px;font:700 15px/1.3 var(--display);cursor:pointer;max-width:min(440px,80vw)}
+.pill-y{background:var(--yellow);color:var(--on-yellow)}
+.pill-o{background:transparent;color:var(--bp-line);box-shadow:inset 0 0 0 2px var(--bp-dim)}
+.pill[hidden]{display:none}
+.controls{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bp-2);color:var(--bp-line)}
+.cg{display:flex;align-items:center;gap:6px;flex:none}
+.ib{width:40px;height:40px;flex:none;display:grid;place-items:center;border:0;border-radius:50%;background:rgba(230,239,247,.1);color:var(--bp-line);cursor:pointer}
+.ib svg{width:17px;height:17px}
+.ib.main{background:var(--yellow);color:var(--on-yellow)}
+.ib:disabled{opacity:.3;cursor:default}
+.ib .i-pause{display:none}.ib.playing .i-play{display:none}.ib.playing .i-pause{display:block}
+.segs{flex:1;min-width:60px;display:flex;gap:4px;align-items:center}
+.seg{flex:1;height:8px;padding:0;border:0;border-radius:4px;background:rgba(230,239,247,.18);cursor:pointer;position:relative;overflow:hidden}
+.seg[hidden]{display:none}
+.seg i{position:absolute;inset:0;background:var(--yellow);transform:scaleX(0);transform-origin:0 50%}
+.seg.done i{transform:none;background:var(--amber)}
+.tm{font:600 13px var(--display);white-space:nowrap;color:var(--bp-dim)}
+.sp{background:rgba(230,239,247,.1);color:var(--bp-line);border:0;border-radius:8px;padding:8px 6px;font:600 13px var(--display)}
+.sp option{color:#17212B}
+.tg{border:0;border-radius:8px;background:rgba(230,239,247,.1);color:var(--bp-line);padding:9px 11px;font:700 12.5px var(--display);cursor:pointer}
+.tg[aria-pressed="true"]{background:var(--yellow);color:var(--on-yellow)}
+.stage:fullscreen,.stage.fs{display:flex;flex-direction:column;justify-content:center;border-radius:0}
+.stage:-webkit-full-screen{display:flex;flex-direction:column;justify-content:center;border-radius:0}
+.stage:fullscreen .lsvg,.stage.fs .lsvg{max-height:calc(100dvh - 62px);width:auto;max-width:100%;margin:0 auto}
+.stage:-webkit-full-screen .lsvg{max-height:calc(100vh - 62px);width:auto;max-width:100%;margin:0 auto}
+.stage.fs{position:fixed;inset:0;z-index:60}
+.rot{display:none;margin:10px 0 0;font-size:13.5px;color:var(--muted)}
+
+/* ---------- manual text ---------- */
+.manual{margin-top:22px;background:var(--panel);border-radius:16px;padding:clamp(18px,2.4vw,28px)}
+.manual h2{font:700 17px/1.3 var(--display);margin:0 0 4px}
+.manual-note{margin:0 0 16px;font-size:14px;color:var(--muted)}
+.mtext{list-style:none;margin:0;padding:0;display:grid;gap:4px;counter-reset:pt}
+.mtext[hidden]{display:none}
+.mtext>li{counter-increment:pt;display:grid;grid-template-columns:34px 1fr;gap:12px;padding:12px 14px;border-radius:12px;cursor:pointer;color:var(--muted);transition:background .25s,color .25s}
+.mtext>li::before{content:counter(pt);width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font:700 13px var(--display);background:var(--panel-2);color:var(--muted)}
+.mtext>li:hover{background:var(--panel-2)}
+.mtext>li.now{background:var(--panel-2);color:var(--ink);box-shadow:inset 4px 0 0 var(--yellow)}
+.mtext>li.now::before{background:var(--yellow);color:var(--on-yellow)}
+.mtext b{color:var(--ink);font-weight:600}
+.mtext ul{margin:6px 0 0;padding-left:18px}
+.mtext .mh{grid-column:1/-1;margin:14px 0 2px;padding:0 14px;font:700 14px/1.3 var(--display);color:var(--orange);counter-increment:none;cursor:default}
+.mtext .mh::before{display:none}
+.mtext .mh:hover{background:none}
+
+/* ---------- blueprint drawing ---------- */
+.bg{fill:var(--bp)}
+.ln{fill:none;stroke:var(--bp-line);stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
+.thick{stroke-width:6}
+.lnd{fill:none;stroke:var(--bp-dim);stroke-width:2.5;stroke-linecap:round}
+.lno{fill:none;stroke:var(--orange);stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+.lny{fill:none;stroke:var(--yellow);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.lnw{fill:none;stroke:var(--bp-line);stroke-width:3;stroke-linecap:round}
+.fy{fill:var(--yellow)}.fo{fill:var(--orange)}.fa{fill:var(--amber)}.fr{fill:var(--red)}.fg{fill:var(--green)}
+.fw{fill:rgba(230,239,247,.14)}.fbp{fill:var(--bp)}.fbp2{fill:var(--bp-2)}.fwater{fill:var(--water);opacity:.55}
+.nor{fill:none;stroke:var(--red);stroke-width:9;stroke-linecap:round}
+.ckw{fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.ckd{fill:none;stroke:var(--on-yellow);stroke-width:7;stroke-linecap:round}
+.link{fill:none;stroke:var(--orange);stroke-width:4;stroke-linecap:round;stroke-dasharray:3 10}
+.rope{fill:none;stroke:var(--orange);stroke-width:5;stroke-linecap:round}
+.dim{fill:none;stroke:var(--yellow);stroke-width:2.5}
+.zone{fill:rgba(230,239,247,.05);stroke:var(--bp-dim);stroke-width:2.5;stroke-dasharray:10 8}
+.crack{fill:none;stroke:var(--red);stroke-width:4;stroke-linejoin:round}
+.hl{fill:none;stroke:var(--yellow);stroke-width:9;stroke-linecap:round;opacity:.9}
+.tape{fill:none;stroke:var(--yellow);stroke-width:12;stroke-dasharray:18 14}
+.wave{fill:none;stroke:var(--yellow);stroke-width:5;stroke-linecap:round}
+.dark{fill:#06121F;opacity:.72}
+.glow{fill:var(--yellow);opacity:.3}
+.sh-bar{fill:var(--yellow)}
+.tsh{fill:var(--bp-line);font:700 27px var(--display)}
+.t{fill:var(--bp-line);font:500 19px var(--sans)}
+.tb{fill:var(--bp-line);font:700 22px var(--display)}
+.ty{fill:var(--yellow);font:700 22px var(--display)}
+.td{fill:var(--bp-dim);font:500 16px var(--sans)}
+.tbig{fill:var(--bp-line);font:800 44px var(--display)}
+.tzero{fill:var(--yellow);font:800 230px var(--display)}
+.tq{fill:var(--yellow);font:800 120px var(--display)}
+.chip{fill:var(--bp-2);stroke:var(--bp-dim);stroke-width:2}
+.chip-y{fill:var(--yellow)}
+.tchip{fill:var(--bp-line);font:700 18px var(--display)}
+.tchip-d{fill:var(--on-yellow);font:700 18px var(--display)}
+.card{fill:var(--bp-2);stroke:var(--bp-dim);stroke-width:2}
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}
+  .side{position:fixed;z-index:40;left:0;top:0;width:min(360px,88vw);transform:translateX(-102%);transition:transform .28s cubic-bezier(.2,.8,.2,1);box-shadow:8px 0 30px rgba(0,0,0,.35)}
+  .side.show{transform:none}
+  .side-close{display:block}
+  .scrim{display:block;position:fixed;inset:0;z-index:35;background:rgba(8,20,32,.5);opacity:0;pointer-events:none;transition:opacity .25s}
+  .scrim.show{opacity:1;pointer-events:auto}
+  .mbar{display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:6;padding:8px clamp(14px,3vw,40px);padding-top:max(8px,env(safe-area-inset-top,0px));background:var(--bg);border-bottom:1px solid var(--line)}
+  .menu-btn{flex:none;border:0;border-radius:999px;background:var(--yellow);color:var(--on-yellow);padding:10px 16px;font:700 14px var(--display);cursor:pointer}
+  .mbar-t{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font:600 14px var(--display);color:var(--muted)}
+  .player{max-width:max(300px,calc((100dvh - 60px - 62px - 40px) * 16 / 9))}
+  .stage{scroll-margin-top:64px}
+  .tm{display:none}
+}
+@media (max-width:600px){
+  main{padding:16px 14px 40px}
+  .player{max-width:none}
+  .stage{margin:0 -14px;border-radius:0}
+  .controls{gap:6px;padding:8px 10px}
+  .ib{width:36px;height:36px}
+  .sp,.cg-x,.tblock{display:none}
+  .tg{padding:8px}
+  .manual{margin:16px -14px 0;border-radius:0}
+  .mtext>li{grid-template-columns:28px 1fr;gap:10px;padding:10px}
+}
+@media (max-width:380px){#nr{display:none}}
+@media (max-width:600px) and (orientation:portrait){.rot{display:block}}
+@media (max-height:500px) and (orientation:landscape){.player{max-width:max(300px,calc((100dvh - 56px - 56px - 16px) * 16 / 9))}main{padding-top:12px}
+  .tblock,.sp,.cg-x{display:none}.controls{gap:6px;padding:7px 10px}.ib{width:34px;height:34px}.tg{padding:7px 9px}.start,.endcard{inset:0 0 50px}}
+@media (min-width:1700px){main{max-width:1440px}}
+</style>
+</head>
+<body>
+<!-- shared drawing symbols -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="p-grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="rgba(230,239,247,.07)" stroke-width="1.5"/></pattern>
+    <pattern id="p-net" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M0 0L16 16M16 0L0 16" stroke="#7FA3C4" stroke-width="1.6"/></pattern>
+    <pattern id="p-soil" width="22" height="22" patternUnits="userSpaceOnUse"><rect width="22" height="22" fill="#18456E"/><path d="M0 22L22 0M-6 6l12-12M16 28l12-12" stroke="#7FA3C4" stroke-width="1.4" opacity=".55"/><circle cx="6" cy="15" r="1.6" fill="#7FA3C4"/></pattern>
+    <pattern id="p-hatch" width="14" height="14" patternUnits="userSpaceOnUse"><path d="M0 14L14 0" stroke="#7FA3C4" stroke-width="1.5"/></pattern>
+    <marker id="m-arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#E89519"/></marker>
+  </defs>
+  <symbol id="s-worker" viewBox="0 0 80 200">
+    <path class="fo ln" d="M22 74h36a8 8 0 0 1 8 8v50H14V82a8 8 0 0 1 8-8z"/>
+    <path class="lnw" d="M15 100h50M15 116h50"/>
+    <path class="ln" d="M16 84 8 128M64 84l8 44"/>
+    <path class="ln thick" d="M30 134v54M50 134v54"/>
+    <path class="ln thick" d="M22 192h14M44 192h14"/>
+    <circle class="fbp ln" cx="40" cy="54" r="15"/>
+    <path class="fy ln" d="M20 44a20 19 0 0 1 40 0v2H20z"/>
+    <path class="fy ln" d="M14 44h52v6H14z"/>
+  </symbol>
+  <symbol id="s-worker-bare" viewBox="0 0 80 200">
+    <path class="fo ln" d="M22 74h36a8 8 0 0 1 8 8v50H14V82a8 8 0 0 1 8-8z"/>
+    <path class="lnw" d="M15 100h50M15 116h50"/>
+    <path class="ln" d="M16 84 8 128M64 84l8 44"/>
+    <path class="ln thick" d="M30 134v54M50 134v54"/>
+    <path class="ln thick" d="M22 192h14M44 192h14"/>
+    <circle class="fbp ln" cx="40" cy="54" r="15"/>
+  </symbol>
+  <symbol id="s-helmet" viewBox="0 0 120 80">
+    <path class="fy ln" d="M16 60a44 42 0 0 1 88 0z"/><path class="fy ln" d="M6 60h108v9H6z"/><path class="ln" d="M60 20v40M40 26l6 34M80 26l-6 34"/>
+  </symbol>
+  <symbol id="s-goggles" viewBox="0 0 140 60">
+    <path class="ln thick" d="M3 30h20M117 30h20"/><rect class="fw ln" x="22" y="10" width="44" height="40" rx="16"/><rect class="fw ln" x="74" y="10" width="44" height="40" rx="16"/><path class="ln" d="M66 28h8"/>
+  </symbol>
+  <symbol id="s-ear" viewBox="0 0 120 110">
+    <path class="ln thick" d="M22 62a38 46 0 0 1 76 0"/><rect class="fy ln" x="6" y="54" width="30" height="48" rx="13"/><rect class="fy ln" x="84" y="54" width="30" height="48" rx="13"/>
+  </symbol>
+  <symbol id="s-resp" viewBox="0 0 120 100">
+    <path class="ln" d="M22 34 4 20M98 34l18-14"/><path class="fw ln" d="M22 34q38-34 76 0l-8 40q-30 26-60 0z"/><circle class="fo ln" cx="26" cy="68" r="16"/><circle class="fo ln" cx="94" cy="68" r="16"/>
+  </symbol>
+  <symbol id="s-harness" viewBox="0 0 100 170">
+    <path class="lno" d="M26 6l24 74 24-74M18 92h64M30 92l-12 70M70 92l12 70"/><circle class="ln" cx="50" cy="82" r="9"/>
+  </symbol>
+  <symbol id="s-net" viewBox="0 0 240 120">
+    <rect x="3" y="3" width="234" height="114" rx="6" fill="url(#p-net)" stroke="#E6EFF7" stroke-width="3.5"/>
+  </symbol>
+  <symbol id="s-jacket" viewBox="0 0 110 130">
+    <path class="fo ln" d="M24 18l18-12h26l18 12v104H24z"/><path class="ln" d="M42 6l13 30 13-30"/><path class="lny" d="M26 64h58M26 88h58"/>
+  </symbol>
+  <symbol id="s-specs" viewBox="0 0 120 50">
+    <circle class="ln" cx="30" cy="26" r="18"/><circle class="ln" cx="90" cy="26" r="18"/><path class="ln" d="M48 24q12-8 24 0M12 22 2 16M108 22l10-6"/>
+  </symbol>
+  <symbol id="s-ladder" viewBox="0 0 70 240">
+    <path class="ln thick" d="M10 2v236M60 2v236"/><path class="ln" d="M10 24h50M10 56h50M10 88h50M10 120h50M10 152h50M10 184h50M10 216h50"/>
+  </symbol>
+  <symbol id="s-scaffold" viewBox="0 0 220 280">
+    <path class="ln thick" d="M10 0v280M110 0v280M210 0v280M4 90h212M4 180h212"/><path class="ln" d="M10 280l100-100M110 180l100-90"/>
+    <rect class="fa ln" x="4" y="78" width="212" height="12"/><rect class="fa ln" x="4" y="168" width="212" height="12"/>
+  </symbol>
+  <symbol id="s-plug" viewBox="0 0 90 140">
+    <path class="ln" d="M45 100v38"/><rect class="fy ln" x="14" y="40" width="62" height="62" rx="12"/><path class="ln thick" d="M32 40V12M58 40V12"/>
+  </symbol>
+  <symbol id="s-bulb" viewBox="0 0 70 110">
+    <circle class="fw ln" cx="35" cy="40" r="28"/><path class="ln" d="M24 68h22v20H24zM27 96h16"/>
+  </symbol>
+  <symbol id="s-ext" viewBox="0 0 70 160">
+    <path class="ln" d="M28 40V26h14v14M42 28h18l6 12M28 28q-24 8-20 40"/><rect class="fr ln" x="14" y="40" width="42" height="114" rx="14"/><rect class="fw" x="20" y="80" width="30" height="34" rx="4"/>
+  </symbol>
+  <symbol id="s-aid" viewBox="0 0 120 96">
+    <path class="ln" d="M42 22V10h36v12"/><rect class="fw ln" x="6" y="22" width="108" height="68" rx="10"/><path class="fr" d="M52 38h16v14h14v16H68v14H52V68H38V52h14z"/>
+  </symbol>
+  <symbol id="s-bug" viewBox="0 0 90 70">
+    <ellipse class="ln" cx="28" cy="22" rx="16" ry="9"/><ellipse class="ln" cx="62" cy="22" rx="16" ry="9"/><path class="ln" d="M32 46 16 60M58 46l16 14M32 36l-18 4M58 36l18 4"/><ellipse class="fw ln" cx="45" cy="40" rx="13" ry="20"/>
+  </symbol>
+  <symbol id="s-hook" viewBox="0 0 80 200">
+    <path class="ln" d="M40 0v104"/><rect class="fy ln" x="24" y="104" width="32" height="26" rx="5"/><path class="ln thick" d="M40 130v18a20 20 0 1 1-20 20"/>
+  </symbol>
+  <symbol id="s-meter" viewBox="0 0 90 140">
+    <rect class="fy ln" x="8" y="8" width="74" height="124" rx="14"/><rect class="fbp ln" x="18" y="22" width="54" height="40" rx="6"/><circle class="ln" cx="30" cy="96" r="7"/><circle class="ln" cx="60" cy="96" r="7"/>
+  </symbol>
+  <symbol id="s-clip" viewBox="0 0 120 150">
+    <rect class="fw ln" x="8" y="14" width="104" height="132" rx="10"/><rect class="fy ln" x="38" y="4" width="44" height="20" rx="6"/>
+    <rect class="ln" x="22" y="44" width="14" height="14" rx="3"/><rect class="ln" x="22" y="74" width="14" height="14" rx="3"/><rect class="ln" x="22" y="104" width="14" height="14" rx="3"/>
+    <path class="lnd" d="M46 51h50M46 81h50M46 111h50"/>
+  </symbol>
+  <symbol id="s-bottle" viewBox="0 0 80 130">
+    <path class="fw ln" d="M30 6h20v24l16 20v74H14V50l16-20z"/><path class="fo ln" d="M40 66l16 16-16 16-16-16z"/>
+  </symbol>
+  <symbol id="s-glove" viewBox="0 0 80 110">
+    <path class="fo ln" d="M20 104V58L10 34q-3-8 4-10t9 6l7 16V16q0-8 7-8t7 8v26V10q0-8 7-8t7 8v32V16q0-7 7-7t6 7v54q0 34-26 34z"/>
+  </symbol>
+  <symbol id="s-shav" viewBox="0 0 160 70">
+    <path class="lny" d="M8 60q12-34 30-12t30-4 30-12 34 14"/><path class="lny" d="M22 46q14-24 26-4M78 40q12-20 26-2M118 50q10-16 22-2"/>
+  </symbol>
+  <symbol id="s-cloud" viewBox="0 0 160 130">
+    <path class="fw ln" d="M42 74a26 26 0 0 1 8-50 34 34 0 0 1 64 8 22 22 0 0 1 8 42z"/><path class="lnw" d="M52 90l-8 22M82 90l-8 22M112 90l-8 22"/>
+  </symbol>
+  <symbol id="s-cal" viewBox="0 0 110 110">
+    <rect class="fw ln" x="6" y="16" width="98" height="88" rx="10"/><path class="fr" d="M8 26a8 8 0 0 1 8-8h78a8 8 0 0 1 8 8v12H8z"/><path class="ln" d="M30 6v20M80 6v20"/>
+  </symbol>
+  <symbol id="s-no" viewBox="0 0 100 100"><circle class="nor" cx="50" cy="50" r="42"/><path class="nor" d="M21 21l58 58"/></symbol>
+  <symbol id="s-ok" viewBox="0 0 60 60"><circle class="fg" cx="30" cy="30" r="28"/><path class="ckw" d="M17 31l9 9 17-19"/></symbol>
+  <symbol id="s-bad" viewBox="0 0 60 60"><circle class="fr" cx="30" cy="30" r="28"/><path class="ckw" d="M20 20l20 20M40 20 20 40"/></symbol>
+  <symbol id="s-warn" viewBox="0 0 100 90"><path class="fy ln" d="M50 6l44 78H6z"/><path class="ckd" d="M50 32v24M50 68v3"/></symbol>
+  <symbol id="s-eye" viewBox="0 0 120 70"><path class="fw ln" d="M6 35q54-56 108 0-54 56-108 0z"/><circle class="fy ln" cx="60" cy="35" r="14"/></symbol>
+  <symbol id="s-book" viewBox="0 0 160 110">
+    <path class="fw ln" d="M80 20q-34-16-72-8v88q38-8 72 8 34-16 72-8V12q-38-8-72 8z"/><path class="ln" d="M80 20v88"/><path class="lnd" d="M22 36h40M22 54h40M22 72h40M98 36h40M98 54h40M98 72h40"/>
+  </symbol>
+  <symbol id="s-mag" viewBox="0 0 100 100"><path class="ln thick" d="M60 60l32 32"/><circle class="fw ln" cx="40" cy="40" r="28"/></symbol>
+  <symbol id="s-machine" viewBox="0 0 180 140">
+    <rect class="fy ln" x="10" y="30" width="150" height="80" rx="10"/><rect class="fbp ln" x="26" y="46" width="50" height="30" rx="4"/><path class="ln" d="M100 50h44M100 66h44M100 82h44"/>
+    <circle class="fbp ln" cx="44" cy="118" r="16"/><circle class="fbp ln" cx="126" cy="118" r="16"/>
+  </symbol>
+  <symbol id="s-bin" viewBox="0 0 90 120"><path class="fy ln" d="M10 24h70l-8 90H18z"/><path class="ln" d="M4 24h82M34 24V12h22v12M32 44l4 54M45 44v54M58 44l-4 54"/></symbol>
+  <symbol id="s-tractor" viewBox="0 0 260 130"><rect class="fa ln" x="130" y="30" width="120" height="58" rx="4"/><path class="fy ln" d="M10 88V40h50l20-26h30v74z"/><rect class="fbp ln" x="66" y="22" width="34" height="26" rx="3"/><path class="ln" d="M110 74h20"/><circle class="fbp ln thick" cx="38" cy="96" r="26"/><circle class="fbp ln" cx="100" cy="106" r="14"/><circle class="fbp ln" cx="170" cy="106" r="16"/><circle class="fbp ln" cx="220" cy="106" r="16"/></symbol>
+  <symbol id="s-door" viewBox="0 0 120 220"><path class="ln thick" d="M6 216V6h108v210"/><rect class="fa ln" x="18" y="18" width="84" height="198" rx="3"/><circle class="ln" cx="88" cy="118" r="5"/></symbol>
+  <symbol id="s-lock" viewBox="0 0 70 90"><path class="ln thick" d="M18 40V26a17 17 0 0 1 34 0v14"/><rect class="fy ln" x="8" y="40" width="54" height="44" rx="8"/><circle class="ln" cx="35" cy="60" r="5"/><path class="ln" d="M35 65v8"/></symbol>
+  <symbol id="s-cig" viewBox="0 0 160 70"><rect class="fw ln" x="10" y="30" width="110" height="18" rx="3"/><rect class="fo ln" x="120" y="30" width="26" height="18" rx="3"/><path class="lnd" d="M30 22q-8-10 0-18M50 24q-8-10 0-18"/></symbol>
+  <symbol id="s-boot" viewBox="0 0 110 120"><path class="fy ln" d="M22 6h40v70l36 14q8 4 8 12v12H10V6z"/><path class="ln" d="M10 98h96"/></symbol>
+  <symbol id="s-stretcher" viewBox="0 0 260 80"><rect class="fw ln" x="30" y="24" width="200" height="26" rx="6"/><path class="ln thick" d="M6 37h24M230 37h24M60 50v18M200 50v18"/><path class="fr" d="M118 30h12v8h8v10h-8v0h-12v0h-8V38h8z"/></symbol>
+  <symbol id="s-flood" viewBox="0 0 120 90"><rect class="fy ln" x="10" y="10" width="100" height="54" rx="8"/><rect class="fw ln" x="22" y="20" width="76" height="34" rx="4"/><path class="ln" d="M60 64v20M40 86h40"/></symbol>
+  <symbol id="s-drum" viewBox="0 0 80 110"><rect class="fr ln" x="8" y="8" width="64" height="96" rx="8"/><path class="ln" d="M8 38h64M8 72h64"/></symbol>
+  <symbol id="s-paint" viewBox="0 0 90 100"><path class="fo ln" d="M10 26h70v66a6 6 0 0 1-6 6H16a6 6 0 0 1-6-6z"/><path class="ln" d="M10 26q35-30 70 0"/><path class="fy" d="M24 50h42v22H24z"/></symbol>
+  <symbol id="s-bag" viewBox="0 0 120 36"><rect class="fw ln" x="4" y="4" width="112" height="28" rx="10"/><path class="lnd" d="M30 18h60"/></symbol>
+  <symbol id="s-hframe" viewBox="0 0 120 140"><path class="ln thick" d="M14 4v132M106 4v132"/><path class="ln" d="M14 40h92M14 96h92M14 40l92 56"/></symbol>
+  <symbol id="s-phone" viewBox="0 0 40 40"><path class="fy" d="M10 4l8 8-4 6q4 8 12 12l6-4 8 8-6 6Q10 38 4 10z"/></symbol>
+  <symbol id="s-exit" viewBox="0 0 120 60"><rect class="fg" x="2" y="2" width="116" height="56" rx="6"/><text x="60" y="40" text-anchor="middle" style="fill:#fff;font:800 26px var(--display)">EXIT</text></symbol>
+  <symbol id="s-amb" viewBox="0 0 200 120"><path class="fw ln" d="M10 90V30h110l40 30h30v30z"/><path class="fbp ln" d="M126 38h22l24 20h-46z"/><path class="fr" d="M48 42h14v14h14v14H62v14H48V70H34V56h14z"/><circle class="fbp ln" cx="50" cy="96" r="16"/><circle class="fbp ln" cx="150" cy="96" r="16"/></symbol>
+  <symbol id="s-sign" viewBox="0 0 160 220"><path class="ln thick" d="M80 120v96"/><rect class="fy ln" x="6" y="6" width="148" height="114" rx="8"/></symbol>
+  <symbol id="s-grinder" viewBox="0 0 200 110"><rect class="fy ln" x="60" y="40" width="120" height="34" rx="12"/><circle class="fw ln" cx="44" cy="57" r="38"/><path class="ln" d="M44 19v76M6 57h76"/></symbol>
+  <symbol id="s-saw" viewBox="0 0 120 120"><circle class="fw ln" cx="60" cy="60" r="44"/><path class="ln" d="M60 8l8 14M104 36l-14 4M112 70l-14-4M96 106l-10-12M60 112l-2-14M20 104l10-12M8 66l14-4M16 30l14 8M38 10l6 14M84 12l-6 14"/><circle class="fbp ln" cx="60" cy="60" r="10"/></symbol>
+</svg>
+
+<div class="app">
+  <aside class="side" id="side" aria-label="Lessons">
+    <div class="side-top">
+      <h2><span>1.0 Activity</span>Safety and Housekeeping</h2>
+      <button class="side-close" id="sideClose" type="button" aria-label="Close lessons">&times;</button>
+    </div>
+
+    <div class="ls" data-l="0">
+      <button class="ls-btn" type="button"><span class="ls-no">1</span><span class="ls-t">1.1 Minimum Requirements for Safety<small>Knowledge of Activity</small></span></button>
+      <ol class="pts">
+        <li><button class="pt" type="button">Personnel are to be aware of what is required of them</button></li>
+        <li><button class="pt" type="button">Areas of responsibility are defined and lines of communication are clear</button></li>
+        <li><button class="pt" type="button">People take that responsibility seriously…</button></li>
+        <li><button class="pt" type="button">Be familiar with codes of practices…</button></li>
+        <li><button class="pt" type="button">Review internal procedures (i.e. check lists)…</button></li>
+        <li><button class="pt" type="button">Don’t allow the use of scaffold…</button></li>
+        <li><button class="pt" type="button">Think Safety and Work Safely</button></li>
+      </ol>
+    </div>
+
+    <div class="ls" data-l="1">
+      <button class="ls-btn" type="button"><span class="ls-no">2</span><span class="ls-t">1.1.1 Think Safety<small>Personal Protective and Life Saving Equipment</small></span></button>
+      <ol class="pts">
+        <li><button class="pt" type="button">To achieve “zero accident” site…</button></li>
+        <li><button class="pt" type="button">Personal protective equipment (PPE)</button></li>
+        <li><button class="pt" type="button">Head protection</button></li>
+        <li><button class="pt" type="button">Hearing protection</button></li>
+        <li><button class="pt" type="button">Eye and face protection</button></li>
+        <li><button class="pt" type="button">Respiratory protection</button></li>
+        <li><button class="pt" type="button">Safety belts and lifelines</button></li>
+        <li><button class="pt" type="button">Safety nets</button></li>
+        <li><button class="pt" type="button">Workers over or near water</button></li>
+      </ol>
+    </div>
+
+    <div class="ls" data-l="2">
+      <button class="ls-btn" type="button"><span class="ls-no">3</span><span class="ls-t">1.1.1 Think Safety (continued)<small>Workers, fall protection, openings and scaffolding</small></span></button>
+      <ol class="pts">
+        <li><button class="pt" type="button">Workers below 18 years of age…</button></li>
+        <li><button class="pt" type="button">Vertical drops of 6 feet or more…</button></li>
+        <li><button class="pt" type="button">Openings in the slab…</button></li>
+        <li><button class="pt" type="button">Do not allow work in vertical alignment…</button></li>
+        <li><button class="pt" type="button">Secure working platform planks…</button></li>
+        <li><button class="pt" type="button">Place scaffolding on firm even ground…</button></li>
+        <li><button class="pt" type="button">Dowel rods should not be left naked…</button></li>
+      </ol>
+    </div>
+
+    <div class="ls" data-l="3">
+      <button class="ls-btn" type="button"><span class="ls-no">4</span><span class="ls-t">Trenches<small>Protective Systems for Trenches</small></span></button>
+      <ol class="pts">
+        <li><button class="pt" type="button">Trenches 5 feet deep or greater…</button></li>
+        <li><button class="pt" type="button">Sloping</button></li>
+        <li><button class="pt" type="button">Shoring</button></li>
+        <li><button class="pt" type="button">Shielding</button></li>
+      </ol>
+    </div>
+
+    <div class="ls" data-l="4">
+      <button class="ls-btn" type="button"><span class="ls-no">5</span><span class="ls-t">Safety Instructions<small>15 instructions for every site</small></span></button>
+      <ol class="pts">
+        <li><button class="pt" type="button">Inspect trenches at the start of each shift…</button></li>
+        <li><button class="pt" type="button">Test for low oxygen…</button></li>
+        <li><button class="pt" type="button">Keep heavy equipment and excavation spoils…</button></li>
+        <li><button class="pt" type="button">Provide stairways, ladders, ramps…</button></li>
+        <li><button class="pt" type="button">Use strong and well-secured ladders…</button></li>
+        <li><button class="pt" type="button">Use industrial safety pin &amp; plugs…</button></li>
+        <li><button class="pt" type="button">Periodically test the lifting machinery…</button></li>
+        <li><button class="pt" type="button">Inspection and rectification of access facilities…</button></li>
+        <li><button class="pt" type="button">Provide adequate artificial lighting…</button></li>
+        <li><button class="pt" type="button">Provide appropriate fire fighting equipment…</button></li>
+        <li><button class="pt" type="button">Remove wooden shavings…</button></li>
+        <li><button class="pt" type="button">Use face mask, hand gloves &amp; eye protection…</button></li>
+        <li><button class="pt" type="button">Take measures to control the menace…</button></li>
+        <li><button class="pt" type="button">Keep first aid kit and snake bite kit…</button></li>
+        <li><button class="pt" type="button">Avoid lady workers working in potentially dangerous locations…</button></li>
+      </ol>
+    </div>
+
+    <div class="ls" data-l="5">
+      <button class="ls-btn" type="button"><span class="ls-no">6</span><span class="ls-t">Safety Training and Education<small>7 points</small></span></button>
+      <ol class="pts">
+        <li><button class="pt" type="button">Conduct mock emergency drill once in a month…</button></li>
+        <li><button class="pt" type="button">Educate workers on safe work practices…</button></li>
+        <li><button class="pt" type="button">Keep a uniform pace of work…</button></li>
+        <li><button class="pt" type="button">Names of persons or departments…</button></li>
+        <li><button class="pt" type="button">Use adequate safety signs…</button></li>
+        <li><button class="pt" type="button">Water sources like sumps…</button></li>
+        <li><button class="pt" type="button">Good housekeeping of materials…</button></li>
+      </ol>
+    </div>
+
+    <div class="ls" data-l="6">
+      <button class="ls-btn" type="button"><span class="ls-no">7</span><span class="ls-t">1.1.2 Housekeeping<small>12 points</small></span></button>
+      <ol class="pts">
+        <li><button class="pt" type="button">Provide dustbin in common areas.</button></li>
+        <li><button class="pt" type="button">Clean debris accumulated regularly…</button></li>
+        <li><button class="pt" type="button">Dust bins of capacity 150 litres…</button></li>
+        <li><button class="pt" type="button">Collect debris at a common point…</button></li>
+        <li><button class="pt" type="button">Stack materials required at site neatly…</button></li>
+        <li><button class="pt" type="button">Dedicate a team for house keeping…</button></li>
+        <li><button class="pt" type="button">Preliminary cleaning…</button></li>
+        <li><button class="pt" type="button">Stack granite slabs properly…</button></li>
+        <li><button class="pt" type="button">Provide temporary doors with locks…</button></li>
+        <li><button class="pt" type="button">The sand shifted for masonry…</button></li>
+        <li><button class="pt" type="button">Smoking, chewing tobacco…</button></li>
+        <li><button class="pt" type="button">Impose heavy penalty…</button></li>
+      </ol>
+    </div>
+
+    <div class="ls" data-l="7">
+      <button class="ls-btn" type="button"><span class="ls-no">8</span><span class="ls-t">1.2.1 Personnel<small>Inspection Methodology for Quality Assurance</small></span></button>
+      <ol class="pts">
+        <li><button class="pt" type="button">Wearing of safety helmets…</button></li>
+        <li><button class="pt" type="button">Safety/ warning boards at vantage points…</button></li>
+        <li><button class="pt" type="button">Wearing of safety belts is compulsory.</button></li>
+        <li><button class="pt" type="button">Safety goggles and ear plugs…</button></li>
+        <li><button class="pt" type="button">Wearing of gloves…</button></li>
+        <li><button class="pt" type="button">Wearing of gum boots during concreting.</button></li>
+        <li><button class="pt" type="button">Provision of stretcher and first aid kit…</button></li>
+      </ol>
+    </div>
+
+    <div class="ls" data-l="8">
+      <button class="ls-btn" type="button"><span class="ls-no">9</span><span class="ls-t">1.2.2 Barricading<small>Inspection Methodology for Quality Assurance</small></span></button>
+      <ol class="pts">
+        <li><button class="pt" type="button">Trenches are barricaded at 1m…</button></li>
+        <li><button class="pt" type="button">All staircases must be barricaded.</button></li>
+        <li><button class="pt" type="button">All lift shafts must be barricaded…</button></li>
+        <li><button class="pt" type="button">Solid barricading… tape barricading…</button></li>
+      </ol>
+    </div>
+
+    <div class="ls" data-l="9">
+      <button class="ls-btn" type="button"><span class="ls-no">10</span><span class="ls-t">1.2.3 Lighting<small>Inspection Methodology for Quality Assurance</small></span></button>
+      <ol class="pts">
+        <li><button class="pt" type="button">Entire site should be floodlit…</button></li>
+        <li><button class="pt" type="button">Lighting on top priority on all staircase areas.</button></li>
+        <li><button class="pt" type="button">Lighting of all cellars.</button></li>
+        <li><button class="pt" type="button">Lighting in all material storage areas…</button></li>
+      </ol>
+    </div>
+
+    <div class="ls" data-l="10">
+      <button class="ls-btn" type="button"><span class="ls-no">11</span><span class="ls-t">1.2.4 Fire Extinguishers<small>Inspection Methodology for Quality Assurance</small></span></button>
+      <ol class="pts">
+        <li><button class="pt" type="button">Fire extinguishers provided in…</button></li>
+        <li><button class="pt" type="button">Instruction manual of fire extinguishers on-site.</button></li>
+        <li><button class="pt" type="button">Training of Project manager…</button></li>
+        <li><button class="pt" type="button">Expiry date… Annual Maintenance Contract (AMC).</button></li>
+      </ol>
+    </div>
+
+    <div class="ls" data-l="11">
+      <button class="ls-btn" type="button"><span class="ls-no">12</span><span class="ls-t">1.2.5 Cleanliness on Site<small>Inspection Methodology for Quality Assurance</small></span></button>
+      <ol class="pts">
+        <li><button class="pt" type="button">Access roads to site and office…</button></li>
+        <li><button class="pt" type="button">Stack all materials to a height of 1.5m only</button></li>
+        <li><button class="pt" type="button">Stack cement bags up to 10 bags high only</button></li>
+        <li><button class="pt" type="button">Stack all H-frames cleanly</button></li>
+        <li><button class="pt" type="button">Clear all debris and debris yard…</button></li>
+        <li><button class="pt" type="button">Visible safety/ warning boards…</button></li>
+      </ol>
+    </div>
+
+    <div class="ls" data-l="12">
+      <button class="ls-btn" type="button"><span class="ls-no">13</span><span class="ls-t">1.2.6 Check Points with the Project Manager<small>Inspection Methodology for Quality Assurance</small></span></button>
+      <ol class="pts">
+        <li><button class="pt" type="button">Personnel working on grinding machines…</button></li>
+        <li><button class="pt" type="button">Electric saw cum planing machines…</button></li>
+        <li><button class="pt" type="button">The following guidelines…</button></li>
+        <li><button class="pt" type="button">Check Lists</button></li>
+      </ol>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+
+  <div class="col">
+    <div class="mbar">
+      <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="side">Lessons</button>
+      <span class="mbar-t" id="mbarT">Safety and Housekeeping</span>
+    </div>
+
+    <main>
+      <div class="heads">
+        <hgroup data-l="0"><p class="l-code">1.1 Knowledge of Activity</p><h1>Minimum Requirements for Safety</h1><p class="l-sub">Lesson 1 of 13, 7 points</p></hgroup>
+        <hgroup data-l="1" hidden><p class="l-code">1.1.1 Think Safety</p><h1>Personal Protective and Life Saving Equipment</h1><p class="l-sub">Lesson 2 of 13, 9 points</p></hgroup>
+        <hgroup data-l="2" hidden><p class="l-code">1.1.1 Think Safety (continued)</p><h1>Workers, fall protection, openings and scaffolding</h1><p class="l-sub">Lesson 3 of 13, 7 points</p></hgroup>
+        <hgroup data-l="3" hidden><p class="l-code">Trenches</p><h1>Protective Systems for Trenches</h1><p class="l-sub">Lesson 4 of 13, 4 points</p></hgroup>
+        <hgroup data-l="4" hidden><p class="l-code">Safety Instructions</p><h1>Safety Instructions</h1><p class="l-sub">Lesson 5 of 13, 15 points</p></hgroup>
+        <hgroup data-l="5" hidden><p class="l-code">1.1.1 Think Safety</p><h1>Safety Training and Education</h1><p class="l-sub">Lesson 6 of 13, 7 points</p></hgroup>
+        <hgroup data-l="6" hidden><p class="l-code">1.1.2</p><h1>Housekeeping</h1><p class="l-sub">Lesson 7 of 13, 12 points</p></hgroup>
+        <hgroup data-l="7" hidden><p class="l-code">1.2 Inspection Methodology for Quality Assurance, 1.2.1</p><h1>Personnel</h1><p class="l-sub">Lesson 8 of 13, 7 points</p></hgroup>
+        <hgroup data-l="8" hidden><p class="l-code">1.2 Inspection Methodology for Quality Assurance, 1.2.2</p><h1>Barricading</h1><p class="l-sub">Lesson 9 of 13, 4 points</p></hgroup>
+        <hgroup data-l="9" hidden><p class="l-code">1.2 Inspection Methodology for Quality Assurance, 1.2.3</p><h1>Lighting</h1><p class="l-sub">Lesson 10 of 13, 4 points</p></hgroup>
+        <hgroup data-l="10" hidden><p class="l-code">1.2 Inspection Methodology for Quality Assurance, 1.2.4</p><h1>Fire Extinguishers</h1><p class="l-sub">Lesson 11 of 13, 4 points</p></hgroup>
+        <hgroup data-l="11" hidden><p class="l-code">1.2 Inspection Methodology for Quality Assurance, 1.2.5</p><h1>Cleanliness on Site</h1><p class="l-sub">Lesson 12 of 13, 6 points</p></hgroup>
+        <hgroup data-l="12" hidden><p class="l-code">1.2 Inspection Methodology for Quality Assurance, 1.2.6</p><h1>Check Points with the Project Manager</h1><p class="l-sub">Lesson 13 of 13, 4 points</p></hgroup>
+      </div>
+
+      <section class="player" aria-label="Lesson video">
+        <div class="stage" id="stage">
+          <svg class="lsvg" data-l="0" viewBox="0 0 960 540" role="img" aria-label="Animated drawing for 1.1 Minimum Requirements for Safety">
+            <rect class="bg" width="960" height="540"/><rect width="960" height="540" fill="url(#p-grid)"/>
+
+            <!-- 1 aware of what is required -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Aware of what is required</text></g>
+              <path class="lnd" d="M40 470H920" data-a="draw"/><rect x="40" y="472" width="880" height="14" fill="url(#p-hatch)" data-a="fade"/>
+              <use href="#s-worker" x="250" y="170" width="120" height="300" data-a="up" data-at=".3"/>
+              <circle class="fw ln" cx="392" cy="196" r="7" data-a="pop" data-at=".8"/>
+              <circle class="fw ln" cx="414" cy="172" r="10" data-a="pop" data-at="1"/>
+              <circle class="fw ln" cx="444" cy="146" r="13" data-a="pop" data-at="1.2"/>
+              <use href="#s-clip" x="480" y="110" width="168" height="210" data-a="pop" data-at="1.4"/>
+              <use href="#s-ok" x="508" y="166" width="24" height="24" data-a="pop" data-at="2.2"/>
+              <use href="#s-ok" x="508" y="208" width="24" height="24" data-a="pop" data-at="2.6"/>
+              <use href="#s-ok" x="508" y="250" width="24" height="24" data-a="pop" data-at="3"/>
+              <text class="tb" x="480" y="372" data-a="up" data-at="3.4">What is required of me</text>
+              <text class="td" x="480" y="400" data-a="up" data-at="3.6">My task, my area, my safety</text>
+            </g>
+
+            <!-- 2 responsibility and communication -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Responsibility and communication</text></g>
+              <circle class="fy ln" cx="480" cy="138" r="24" data-a="pop" data-at=".3"/>
+              <text class="tb" x="516" y="146" data-a="fade" data-at=".5">Site in-charge</text>
+              <rect class="zone" x="80" y="210" width="240" height="250" rx="12" data-a="draw" data-at=".6"/>
+              <rect class="zone" x="360" y="210" width="240" height="250" rx="12" data-a="draw" data-at=".8"/>
+              <rect class="zone" x="640" y="210" width="240" height="250" rx="12" data-a="draw" data-at="1"/>
+              <text class="ty" x="104" y="246" data-a="fade" data-at="1.2">Area A</text>
+              <text class="ty" x="384" y="246" data-a="fade" data-at="1.3">Area B</text>
+              <text class="ty" x="664" y="246" data-a="fade" data-at="1.4">Area C</text>
+              <use href="#s-worker" x="176" y="290" width="56" height="140" data-a="up" data-at="1.4"/>
+              <use href="#s-worker" x="456" y="290" width="56" height="140" data-a="up" data-at="1.5"/>
+              <use href="#s-worker" x="736" y="290" width="56" height="140" data-a="up" data-at="1.6"/>
+              <path class="link" d="M204 286 Q260 170 458 146" data-a="draw" data-at="2"/>
+              <path class="link" d="M484 286 V164" data-a="draw" data-at="2.2"/>
+              <path class="link" d="M764 286 Q700 170 502 146" data-a="draw" data-at="2.4"/>
+            </g>
+
+            <!-- 3 see or foresee a problem -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">See or foresee a problem</text></g>
+              <rect class="fw ln" x="40" y="380" width="500" height="26" data-a="grow-x"/>
+              <path class="lnd" d="M540 406V500" data-a="draw" data-at=".3"/>
+              <use href="#s-worker" x="150" y="130" width="100" height="250" data-a="up" data-at=".3"/>
+              <use href="#s-eye" x="270" y="150" width="96" height="56" data-a="pop" data-at=".9"/>
+              <use href="#s-warn" x="500" y="260" width="90" height="81" data-a="pulse" data-at="1.3"/>
+              <path class="ln thick" d="M420 380V300M520 380V300" data-a="grow-y" data-at="2.6"/>
+              <path class="tape" d="M420 318H520" data-a="grow-x" data-at="2.9"/>
+              <g data-a="pop" data-at="1"><rect class="chip" x="660" y="140" width="150" height="46" rx="23"/><text class="tchip" x="735" y="170" text-anchor="middle">See</text></g>
+              <g data-a="pop" data-at="1.8"><rect class="chip" x="660" y="206" width="150" height="46" rx="23"/><text class="tchip" x="735" y="236" text-anchor="middle">Foresee</text></g>
+              <g data-a="pop" data-at="2.6"><rect class="chip-y" x="660" y="272" width="150" height="46" rx="23"/><text class="tchip-d" x="735" y="302" text-anchor="middle">Take action</text></g>
+            </g>
+
+            <!-- 4 codes of practice -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Codes of practice</text></g>
+              <use href="#s-book" x="100" y="150" width="300" height="206" data-a="up" data-at=".3"/>
+              <text class="tb" x="250" y="400" text-anchor="middle" data-a="fade" data-at="1">Be familiar with them</text>
+              <path class="rope" d="M420 250 C480 196 520 196 548 240" marker-end="url(#m-arr)" data-a="draw" data-at="1.4"/>
+              <use href="#s-worker" x="560" y="160" width="112" height="280" data-a="up" data-at="1.8"/>
+              <use href="#s-ok" x="680" y="150" width="54" height="54" data-a="pop" data-at="2.6"/>
+              <text class="tb" x="616" y="478" text-anchor="middle" data-a="fade" data-at="2.8">Able to implement them</text>
+            </g>
+
+            <!-- 5 checklists -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Check lists</text></g>
+              <use href="#s-clip" x="300" y="110" width="240" height="300" data-a="up" data-at=".2"/>
+              <use href="#s-ok" x="336" y="192" width="40" height="40" data-a="pop" data-at="1.2"/>
+              <use href="#s-ok" x="336" y="252" width="40" height="40" data-a="pop" data-at="1.8"/>
+              <use href="#s-ok" x="336" y="312" width="40" height="40" data-a="pop" data-at="2.4"/>
+              <use href="#s-mag" x="500" y="180" width="110" height="110" data-a="float" data-at=".8"/>
+              <g data-a="pop" data-at="1"><rect class="chip" x="660" y="190" width="170" height="46" rx="23"/><text class="tchip" x="745" y="220" text-anchor="middle">Review</text></g>
+              <g data-a="pop" data-at="2.6"><rect class="chip-y" x="660" y="256" width="170" height="46" rx="23"/><text class="tchip-d" x="745" y="286" text-anchor="middle">Use them</text></g>
+            </g>
+
+            <!-- 6 scaffold you would use yourself -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Would you use it yourself?</text></g>
+              <path class="lnd" d="M40 470H920" data-a="draw"/><rect x="40" y="472" width="880" height="14" fill="url(#p-hatch)" data-a="fade"/>
+              <use href="#s-scaffold" x="120" y="190" width="220" height="280" data-a="grow-y" data-at=".2"/>
+              <use href="#s-worker" x="200" y="128" width="56" height="140" data-a="down" data-at="1"/>
+              <text class="tq" x="420" y="260" data-a="pop" data-at="1.6">?</text>
+              <text class="tb" x="520" y="200" data-a="up" data-at="2">Would I be happy</text>
+              <text class="tb" x="520" y="232" data-a="up" data-at="2.2">using it myself?</text>
+              <use href="#s-ok" x="520" y="262" width="54" height="54" data-a="pop" data-at="3"/>
+              <text class="td" x="586" y="296" data-a="fade" data-at="3.2">If not, don’t allow it</text>
+            </g>
+
+            <!-- 7 think safety -->
+            <g class="scene">
+              <circle class="ln" cx="480" cy="240" r="150" data-a="ring" data-at=".6" style="stroke:var(--yellow)"/>
+              <use href="#s-helmet" x="320" y="120" width="320" height="213" data-a="down" data-at=".2"/>
+              <text class="tbig" x="480" y="408" text-anchor="middle" data-a="up" data-at="1.4">Think Safety</text>
+              <text class="tbig" x="480" y="462" text-anchor="middle" data-a="up" data-at="1.8" style="fill:var(--yellow)">Work Safely</text>
+            </g>
+          </svg>
+          <svg class="lsvg" data-l="1" viewBox="0 0 960 540" role="img" aria-label="Animated drawing for 1.1.1 Personal Protective and Life Saving Equipment" hidden>
+            <rect class="bg" width="960" height="540"/><rect width="960" height="540" fill="url(#p-grid)"/>
+
+            <!-- 1 zero accident -->
+            <g class="scene">
+              <text class="tzero" x="480" y="330" text-anchor="middle" data-a="pop" data-at=".2">0</text>
+              <text class="tb" x="480" y="390" text-anchor="middle" data-a="fade" data-at=".8">“zero accident” site</text>
+              <use href="#s-helmet" x="190" y="120" width="120" height="80" data-a="pop" data-at="1.2"/>
+              <use href="#s-goggles" x="650" y="130" width="130" height="56" data-a="pop" data-at="1.4"/>
+              <use href="#s-ear" x="140" y="270" width="100" height="92" data-a="pop" data-at="1.6"/>
+              <use href="#s-resp" x="720" y="260" width="110" height="92" data-a="pop" data-at="1.8"/>
+              <use href="#s-harness" x="270" y="380" width="60" height="102" data-a="pop" data-at="2"/>
+              <use href="#s-jacket" x="610" y="410" width="66" height="78" data-a="pop" data-at="2.2"/>
+            </g>
+
+            <!-- 2 what PPE includes -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Personal protective equipment</text></g>
+              <use href="#s-worker" x="410" y="110" width="140" height="350" data-a="up" data-at=".2"/>
+              <path class="dim" d="M300 168H455" data-a="draw" data-at=".8"/><text class="tb" x="290" y="175" text-anchor="end" data-a="fade" data-at="1">Head</text>
+              <path class="dim" d="M505 204H660" data-a="draw" data-at="1.1"/><text class="tb" x="670" y="211" data-a="fade" data-at="1.3">Eye and face</text>
+              <path class="dim" d="M300 226H460" data-a="draw" data-at="1.4"/><text class="tb" x="290" y="233" text-anchor="end" data-a="fade" data-at="1.6">Respiratory devices</text>
+              <path class="dim" d="M530 300H660" data-a="draw" data-at="1.7"/><text class="tb" x="670" y="307" data-a="fade" data-at="1.9">Protective clothing</text>
+              <path class="dim" d="M300 336H420" data-a="draw" data-at="2"/><text class="tb" x="290" y="343" text-anchor="end" data-a="fade" data-at="2.2">Extremity</text>
+              <path class="fw ln" d="M690 360h80v40q0 30-40 44-40-14-40-44z" data-a="pop" data-at="2.5"/>
+              <text class="tb" x="790" y="400" data-a="fade" data-at="2.7">Shields</text>
+              <text class="tb" x="790" y="428" data-a="fade" data-at="2.8">and barriers</text>
+            </g>
+
+            <!-- 3 head protection -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Head protection</text></g>
+              <path class="lnd" d="M40 470H920" data-a="draw"/><rect x="40" y="472" width="880" height="14" fill="url(#p-hatch)" data-a="fade"/>
+              <use href="#s-worker-bare" x="320" y="170" width="120" height="300" data-a="up" data-at=".2"/>
+              <use href="#s-helmet" x="326" y="178" width="108" height="72" data-a="down" data-at="1"/>
+              <rect class="fo ln" x="364" y="110" width="34" height="18" rx="3" data-a="deflect" data-at="2.2"/>
+              <g data-a="pop" data-at="2.6"><rect class="chip" x="580" y="170" width="250" height="46" rx="23"/><text class="tchip" x="705" y="200" text-anchor="middle">Impact</text></g>
+              <g data-a="pop" data-at="2.9"><rect class="chip" x="580" y="234" width="250" height="46" rx="23"/><text class="tchip" x="705" y="264" text-anchor="middle">Falling or flying objects</text></g>
+              <g data-a="pop" data-at="3.2"><rect class="chip" x="580" y="298" width="250" height="46" rx="23"/><text class="tchip" x="705" y="328" text-anchor="middle">Electricity</text></g>
+              <path class="fy" d="M536 300l-14 26h12l-8 24 22-32h-12l10-18z" data-a="pop" data-at="3.3"/>
+            </g>
+
+            <!-- 4 hearing protection -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Hearing protection</text></g>
+              <path class="lnd" d="M40 470H920" data-a="draw"/><rect x="40" y="472" width="880" height="14" fill="url(#p-hatch)" data-a="fade"/>
+              <use href="#s-machine" x="100" y="330" width="180" height="140" data-a="up" data-at=".2"/>
+              <text class="ty" x="190" y="320" text-anchor="middle" data-a="fade" data-at=".6">Noise</text>
+              <path class="wave" d="M310 360q16 30 0 60" data-a="wave" data-at=".8"/>
+              <path class="wave" d="M340 340q26 50 0 100" data-a="wave" data-at="1"/>
+              <path class="wave" d="M372 320q36 70 0 140" data-a="wave" data-at="1.2"/>
+              <use href="#s-worker-bare" x="560" y="170" width="112" height="280" data-a="up" data-at=".4"/>
+              <use href="#s-ear" x="566" y="190" width="100" height="92" data-a="down" data-at="2.4"/>
+              <use href="#s-ok" x="700" y="190" width="52" height="52" data-a="pop" data-at="3.2"/>
+            </g>
+
+            <!-- 5 eye and face protection -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Eye and face protection</text></g>
+              <circle class="fbp ln" cx="290" cy="300" r="120" data-a="pop" data-at=".2"/>
+              <use href="#s-helmet" x="160" y="140" width="260" height="173" data-a="down" data-at=".5"/>
+              <use href="#s-specs" x="210" y="272" width="160" height="66" data-a="fade" data-at="1"/>
+              <use href="#s-goggles" x="186" y="258" width="208" height="90" data-a="left" data-at="1.8"/>
+              <text class="td" x="290" y="460" text-anchor="middle" data-a="fade" data-at="2.2">Goggles over spectacles</text>
+              <g data-a="pop" data-at="2.6"><rect class="chip" x="560" y="140" width="200" height="44" rx="22"/><text class="tchip" x="660" y="169" text-anchor="middle">Hacking</text></g>
+              <g data-a="pop" data-at="2.85"><rect class="chip" x="560" y="198" width="200" height="44" rx="22"/><text class="tchip" x="660" y="227" text-anchor="middle">Welding</text></g>
+              <g data-a="pop" data-at="3.1"><rect class="chip" x="560" y="256" width="200" height="44" rx="22"/><text class="tchip" x="660" y="285" text-anchor="middle">Glass cutting</text></g>
+              <g data-a="pop" data-at="3.35"><rect class="chip" x="560" y="314" width="200" height="44" rx="22"/><text class="tchip" x="660" y="343" text-anchor="middle">Chipping</text></g>
+              <g data-a="pop" data-at="3.6"><rect class="chip" x="560" y="372" width="200" height="44" rx="22"/><text class="tchip" x="660" y="401" text-anchor="middle">Drilling</text></g>
+            </g>
+
+            <!-- 6 respiratory protection -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Respiratory protection</text></g>
+              <circle class="link" cx="480" cy="290" r="170" data-a="draw" data-at=".4" data-d="2"/>
+              <use href="#s-resp" x="400" y="226" width="160" height="133" data-a="pop" data-at=".2"/>
+              <g data-a="pop" data-at="1"><rect class="chip-y" x="390" y="100" width="180" height="44" rx="22"/><text class="tchip-d" x="480" y="129" text-anchor="middle">Written plan</text></g>
+              <g data-a="pop" data-at="1.5"><rect class="chip" x="640" y="196" width="250" height="44" rx="22"/><text class="tchip" x="765" y="225" text-anchor="middle">Cleaned and disinfected</text></g>
+              <g data-a="pop" data-at="2"><rect class="chip" x="620" y="372" width="190" height="44" rx="22"/><text class="tchip" x="715" y="401" text-anchor="middle">Stored properly</text></g>
+              <g data-a="pop" data-at="2.5"><rect class="chip" x="160" y="372" width="160" height="44" rx="22"/><text class="tchip" x="240" y="401" text-anchor="middle">Inspected</text></g>
+              <g data-a="pop" data-at="3"><rect class="chip" x="90" y="196" width="220" height="44" rx="22"/><text class="tchip" x="200" y="225" text-anchor="middle">Users trained</text></g>
+            </g>
+
+            <!-- 7 safety belts and lifelines -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Safety belts and lifelines</text></g>
+              <path class="lnd" d="M40 470H920" data-a="draw"/><rect x="40" y="472" width="880" height="14" fill="url(#p-hatch)" data-a="fade"/>
+              <rect class="fw ln" x="110" y="110" width="70" height="360" data-a="grow-y" data-at=".2"/>
+              <text class="td" x="145" y="100" text-anchor="middle" data-a="fade" data-at=".5">Building</text>
+              <circle class="fy ln" cx="196" cy="150" r="12" data-a="pop" data-at=".8"/>
+              <use href="#s-worker" x="300" y="190" width="112" height="280" data-a="up" data-at=".6"/>
+              <use href="#s-harness" x="324" y="282" width="64" height="109" data-a="pop" data-at="1.3"/>
+              <path class="rope" d="M356 334 Q260 300 206 156" data-a="draw" data-at="1.8"/>
+              <text class="tb" x="470" y="200" data-a="up" data-at="2.4">Secured to the building</text>
+              <text class="tb" x="470" y="232" data-a="up" data-at="2.6">at all times</text>
+              <g data-a="pop" data-at="3.2"><path class="rope" d="M490 330q30-30 60 0t60 0"/><use href="#s-bad" x="626" y="306" width="40" height="40"/><text class="td" x="490" y="380">Used for in-service loading:</text><text class="td" x="490" y="404">removed from service</text></g>
+            </g>
+
+            <!-- 8 safety nets -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Safety nets</text></g>
+              <path class="lnd" d="M40 470H920" data-a="draw"/><rect x="40" y="472" width="880" height="14" fill="url(#p-hatch)" data-a="fade"/>
+              <rect class="fw ln" x="60" y="190" width="380" height="22" data-a="grow-x" data-at=".2"/>
+              <rect class="fw ln" x="60" y="212" width="60" height="258" data-a="grow-y" data-at=".3"/>
+              <use href="#s-worker" x="320" y="50" width="56" height="140" data-a="up" data-at=".6"/>
+              <use href="#s-net" x="430" y="330" width="300" height="80" data-a="grow-x" data-at="1.4"/>
+              <path class="rope" d="M440 212L460 332" data-a="draw" data-at="1.3"/>
+              <path class="dim" d="M800 190V470M788 190h24M788 470h24" data-a="draw" data-at="2"/>
+              <text class="ty" x="818" y="322" data-a="pop" data-at="2.6">25 ft</text>
+              <text class="td" x="818" y="348" data-a="fade" data-at="2.8">or higher</text>
+            </g>
+
+            <!-- 9 workers over or near water -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Workers over or near water</text></g>
+              <rect class="fwater" x="-40" y="400" width="1040" height="140" data-a="fade"/>
+              <path class="lnw" d="M-40 420q30-14 60 0t60 0 60 0 60 0 60 0 60 0 60 0 60 0 60 0 60 0 60 0 60 0 60 0 60 0 60 0 60 0 60 0 60 0" data-a="waves" data-at=".2"/>
+              <rect class="fw ln" x="120" y="372" width="420" height="22" data-a="grow-x" data-at=".3"/>
+              <path class="ln thick" d="M160 394v120M500 394v120" data-a="grow-y" data-at=".4"/>
+              <use href="#s-worker" x="290" y="222" width="60" height="150" data-a="up" data-at=".8"/>
+              <use href="#s-jacket" x="287" y="272" width="66" height="78" data-a="pop" data-at="1.6"/>
+              <g data-a="pop" data-at="2.2"><rect class="chip" x="610" y="170" width="230" height="46" rx="23"/><use href="#s-ok" x="616" y="176" width="34" height="34"/><text class="tchip" x="662" y="200">Before each use</text></g>
+              <g data-a="pop" data-at="2.7"><rect class="chip" x="610" y="234" width="230" height="46" rx="23"/><use href="#s-ok" x="616" y="240" width="34" height="34"/><text class="tchip" x="662" y="264">After each use</text></g>
+              <text class="td" x="610" y="316" data-a="fade" data-at="3">Inspected for defects</text>
+            </g>
+          </svg>
+          <svg class="lsvg" data-l="2" viewBox="0 0 960 540" role="img" aria-label="Animated drawing for fall protection, openings and scaffolding" hidden>
+            <rect class="bg" width="960" height="540"/><rect width="960" height="540" fill="url(#p-grid)"/>
+
+            <!-- 1 below 18 -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Below 18 years of age</text></g>
+              <g data-a="up" data-at=".2">
+                <rect class="card" x="170" y="150" width="340" height="210" rx="16"/>
+                <rect class="fw ln" x="196" y="182" width="96" height="120" rx="8"/>
+                <circle class="ln" cx="244" cy="226" r="22"/><path class="ln" d="M210 296q34-40 68 0"/>
+                <text class="td" x="316" y="206">Worker ID</text>
+                <text class="tbig" x="316" y="262">Age 17</text>
+                <path class="lnd" d="M316 290h160M316 316h120"/>
+              </g>
+              <use href="#s-no" x="540" y="170" width="170" height="170" data-a="pop" data-at="1.4"/>
+              <text class="tb" x="625" y="390" text-anchor="middle" data-a="fade" data-at="1.8">Not allowed to work at site</text>
+            </g>
+
+            <!-- 2 drops of 6 feet: three ways -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Drops of 6 feet or more</text></g>
+              <path class="lnd" d="M40 470H420" data-a="draw"/>
+              <rect class="fw ln" x="40" y="220" width="260" height="20" data-a="grow-x" data-at=".2"/>
+              <use href="#s-worker" x="200" y="80" width="56" height="140" data-a="up" data-at=".4"/>
+              <path class="dim" d="M330 240V470M318 240h24M318 470h24" data-a="draw" data-at=".8"/>
+              <text class="ty" x="346" y="362" data-a="pop" data-at="1.2">6 ft</text>
+              <g data-a="up" data-at="1.6"><rect class="card" x="450" y="130" width="140" height="170" rx="12"/><path class="lny" d="M472 210h96M472 250h96M484 200v80M556 200v80"/><text class="tchip" x="520" y="330" text-anchor="middle">Guardrails</text></g>
+              <g data-a="up" data-at="2.4"><rect class="card" x="610" y="130" width="140" height="170" rx="12"/><use href="#s-net" x="626" y="190" width="108" height="56"/><text class="tchip" x="680" y="330" text-anchor="middle">Safety nets</text></g>
+              <g data-a="up" data-at="3.2"><rect class="card" x="770" y="130" width="150" height="170" rx="12"/><circle class="fy ln" cx="845" cy="152" r="8"/><path class="rope" d="M845 160v36"/><use href="#s-harness" x="820" y="196" width="50" height="85"/><text class="tchip" x="845" y="320" text-anchor="middle">Fall arrest</text><text class="td" x="845" y="344" text-anchor="middle">tied above</text></g>
+              <text class="td" x="450" y="400" data-a="fade" data-at="3.8">One of three ways, before work begins</text>
+            </g>
+
+            <!-- 3 openings in the slab -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Openings in the slab</text></g>
+              <rect class="fw ln" x="80" y="120" width="420" height="320" rx="6" data-a="fade" data-at=".1"/>
+              <rect class="fbp2 ln" x="210" y="220" width="160" height="120" data-a="pop" data-at=".4"/>
+              <text class="td" x="290" y="286" text-anchor="middle" data-a="fade" data-at=".6">Opening</text>
+              <rect x="196" y="206" width="188" height="148" class="tape" style="stroke-width:9" data-a="draw" data-at="1.2" data-d="1.4"/>
+              <text class="tb" x="290" y="400" text-anchor="middle" data-a="fade" data-at="2.2">Barricaded / closed at all levels</text>
+              <use href="#s-net" x="570" y="120" width="250" height="100" data-a="grow-x" data-at="2.4"/>
+              <text class="td" x="570" y="246" data-a="fade" data-at="2.7">High rise: safety nets</text>
+              <use href="#s-cal" x="570" y="280" width="60" height="60" data-a="pop" data-at="3"/>
+              <text class="tb" x="644" y="306" data-a="fade" data-at="3.1">Clear debris</text><text class="td" x="644" y="330" data-a="fade" data-at="3.2">once in 2 days</text>
+              <use href="#s-cal" x="570" y="364" width="60" height="60" data-a="pop" data-at="3.4"/>
+              <text class="tb" x="644" y="390" data-a="fade" data-at="3.5">Tighten the net</text><text class="td" x="644" y="414" data-a="fade" data-at="3.6">once in a fortnight</text>
+            </g>
+
+            <!-- 4 vertical alignment -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Work in vertical alignment</text></g>
+              <rect class="fw ln" x="80" y="230" width="380" height="18" data-a="grow-x" data-at=".1"/>
+              <rect class="fw ln" x="80" y="390" width="380" height="18" data-a="grow-x" data-at=".2"/>
+              <path class="lnd" d="M80 500H460" data-a="draw" data-at=".2"/>
+              <use href="#s-worker" x="380" y="90" width="56" height="140" data-a="up" data-at=".5"/>
+              <use href="#s-worker" x="380" y="250" width="56" height="140" data-a="up" data-at=".7"/>
+              <path class="lny" d="M408 90V400" style="stroke-dasharray:8 8" data-a="draw" data-at="1.2"/>
+              <use href="#s-no" x="500" y="170" width="120" height="120" data-a="pop" data-at="1.8"/>
+              <text class="td" x="500" y="330" data-a="fade" data-at="2">Edges, stairwell, lift well,</text>
+              <text class="td" x="500" y="354" data-a="fade" data-at="2.1">other openings in the slab</text>
+              <use href="#s-eye" x="710" y="180" width="140" height="82" data-a="pop" data-at="2.6"/>
+              <text class="tb" x="780" y="296" text-anchor="middle" data-a="fade" data-at="2.9">Close supervision</text>
+            </g>
+
+            <!-- 5 platform planks -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Working platform planks</text></g>
+              <circle class="fbp ln" cx="220" cy="336" r="16" data-a="pop"/><circle class="fbp ln" cx="580" cy="336" r="16" data-a="pop"/>
+              <path class="ln thick" d="M120 336H680" data-a="draw" data-at=".1"/>
+              <rect class="fa ln" x="140" y="260" width="520" height="60" rx="4" data-a="down" data-at=".4"/>
+              <path class="rope" d="M206 254c-20 40 20 70 30 86M234 254c20 40-20 70-30 86" data-a="draw" data-at="1.2"/>
+              <path class="rope" d="M566 254c-20 40 20 70 30 86M594 254c20 40-20 70-30 86" data-a="draw" data-at="1.5"/>
+              <text class="tb" x="400" y="410" text-anchor="middle" data-a="fade" data-at="1.9">Secured with ropes to the scaffolding</text>
+              <path class="dim" d="M700 260V320M688 260h24M688 320h24" data-a="draw" data-at="2.2"/>
+              <text class="ty" x="720" y="284" data-a="pop" data-at="2.4">2”</text><text class="td" x="720" y="308" data-a="fade" data-at="2.5">not less than</text>
+              <path class="crack" d="M380 262l12 14-10 10 14 12-8 10 10 10" data-a="draw" data-at="2.9"/>
+              <use href="#s-mag" x="330" y="160" width="100" height="100" data-a="pop" data-at="3.1"/>
+              <text class="tb" x="440" y="200" data-a="fade" data-at="3.3">Check for splits</text>
+            </g>
+
+            <!-- 6 scaffolding on firm ground -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Scaffolding on firm, even ground</text></g>
+              <path class="lnd" d="M40 470H920" data-a="draw"/><rect x="40" y="472" width="880" height="14" fill="url(#p-hatch)" data-a="fade"/>
+              <use href="#s-scaffold" x="120" y="190" width="220" height="280" data-a="grow-y" data-at=".2"/>
+              <path class="fy" d="M114 466h22v6h-22zM214 466h22v6h-22zM314 466h22v6h-22z" data-a="pop" data-at="1"/>
+              <path class="hl" d="M124 280H336" data-a="draw" data-at="2.2"/>
+              <use href="#s-cal" x="420" y="140" width="64" height="64" data-a="pop" data-at="1.2"/>
+              <text class="tb" x="500" y="170" data-a="fade" data-at="1.3">Check twice a week</text>
+              <text class="td" x="500" y="194" data-a="fade" data-at="1.4">firm even ground</text>
+              <rect class="chip" x="420" y="246" width="64" height="46" rx="12" data-a="pop" data-at="2.2"/>
+              <path class="hl" d="M432 269h40" data-a="pop" data-at="2.3" style="stroke-width:7"/>
+              <text class="tb" x="500" y="266" data-a="fade" data-at="2.4">Weaker zones and</text>
+              <text class="tb" x="500" y="292" data-a="fade" data-at="2.5">horizontal bracing</text>
+              <g data-a="pop" data-at="3"><rect class="fw ln" x="420" y="340" width="64" height="54" rx="4"/><path class="ln" d="M420 367h64M452 340v54"/><use href="#s-bad" x="466" y="326" width="30" height="30"/></g>
+              <text class="tb" x="500" y="364" data-a="fade" data-at="3.2">Supports through toilet</text>
+              <text class="tb" x="500" y="390" data-a="fade" data-at="3.3">ventilators: replace them</text>
+            </g>
+
+            <!-- 7 dowel rods -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Dowel rods at body level</text></g>
+              <rect class="fw ln" x="160" y="440" width="420" height="30" data-a="grow-x"/>
+              <path class="ln thick" d="M220 440V250M290 440V250M360 440V250M430 440V250M500 440V250" data-a="grow-y" data-at=".3" style="stroke:var(--bp-dim)"/>
+              <path class="lny" d="M120 280H620" style="stroke-dasharray:10 10;stroke-width:3" data-a="draw" data-at=".9"/>
+              <text class="ty" x="524" y="270" data-a="fade" data-at="1.2">Body level</text>
+              <use href="#s-worker" x="670" y="270" width="80" height="200" data-a="right" data-at="1.2"/>
+              <rect class="fa ln" x="206" y="226" width="28" height="34" rx="8" data-a="down" data-at="2"/>
+              <rect class="fa ln" x="276" y="226" width="28" height="34" rx="8" data-a="down" data-at="2.2"/>
+              <rect class="fa ln" x="346" y="226" width="28" height="34" rx="8" data-a="down" data-at="2.4"/>
+              <rect class="fa ln" x="416" y="226" width="28" height="34" rx="8" data-a="down" data-at="2.6"/>
+              <rect class="fa ln" x="486" y="226" width="28" height="34" rx="8" data-a="down" data-at="2.8"/>
+              <text class="tb" x="360" y="190" text-anchor="middle" data-a="fade" data-at="3.2">Covered with hessain cloth and POP</text>
+            </g>
+          </svg>
+          <svg class="lsvg" data-l="3" viewBox="0 0 960 540" role="img" aria-label="Animated drawing for trenches and protective systems" hidden>
+            <rect class="bg" width="960" height="540"/><rect width="960" height="540" fill="url(#p-grid)"/>
+
+            <!-- 1 depth rules -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">How deep is the trench?</text></g>
+              <rect x="40" y="200" width="300" height="300" fill="url(#p-soil)" data-a="fade"/>
+              <rect x="520" y="200" width="400" height="300" fill="url(#p-soil)" data-a="fade"/>
+              <path class="ln" d="M40 200H340V500M520 500V200H920" data-a="draw" data-at=".2"/>
+              <path class="dim" d="M430 200V490" data-a="draw" data-at=".8" data-d="2.2"/>
+              <path class="lny" d="M340 268H520" data-a="draw" data-at="1.3"/>
+              <g data-a="pop" data-at="1.5"><rect class="chip-y" x="540" y="244" width="300" height="46" rx="23"/><text class="tchip-d" x="690" y="274" text-anchor="middle">5 ft: protective system</text></g>
+              <path class="lny" d="M340 490H520" data-a="draw" data-at="3"/>
+              <g data-a="pop" data-at="3.2"><rect class="chip" x="540" y="354" width="340" height="72" rx="16"/><text class="tchip" x="560" y="384">20 ft: designed by a registered</text><text class="tchip" x="560" y="410">professional engineer</text></g>
+            </g>
+
+            <!-- 2 sloping -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Sloping</text></g>
+              <path d="M40 200H300L410 470H40Z" fill="url(#p-soil)" data-a="fade"/>
+              <path d="M920 200H660L550 470H920Z" fill="url(#p-soil)" data-a="fade"/>
+              <path class="ln" d="M40 200H300L410 470H550L660 200H920" data-a="draw" data-at=".2" data-d="1.6"/>
+              <path class="hl" d="M300 200L410 470M660 200L550 470" data-a="draw" data-at="1.4"/>
+              <path class="dim" d="M360 200A90 90 0 0 1 336 288" data-a="draw" data-at="2"/>
+              <use href="#s-worker" x="452" y="330" width="56" height="140" data-a="up" data-at="2.2"/>
+              <text class="tb" x="480" y="150" text-anchor="middle" data-a="fade" data-at="2.6">Wall cut back at an angle,</text>
+              <text class="tb" x="480" y="180" text-anchor="middle" data-a="fade" data-at="2.7">inclined away from the excavation</text>
+            </g>
+
+            <!-- 3 shoring -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Shoring</text></g>
+              <rect x="40" y="200" width="340" height="280" fill="url(#p-soil)" data-a="fade"/>
+              <rect x="580" y="200" width="340" height="280" fill="url(#p-soil)" data-a="fade"/>
+              <path class="ln" d="M40 200H380V480M580 480V200H920" data-a="draw" data-at=".2"/>
+              <rect class="fa ln" x="380" y="190" width="16" height="290" data-a="grow-y" data-at=".8"/>
+              <rect class="fa ln" x="564" y="190" width="16" height="290" data-a="grow-y" data-at="1"/>
+              <g data-a="grow-x" data-at="1.6"><path class="ln thick" d="M396 270H564"/><rect class="fy ln" x="452" y="258" width="56" height="24" rx="6"/></g>
+              <g data-a="grow-x" data-at="2"><path class="ln thick" d="M396 400H564"/><rect class="fy ln" x="452" y="388" width="56" height="24" rx="6"/></g>
+              <text class="td" x="480" y="150" text-anchor="middle" data-a="fade" data-at="2.4">Wooden, aluminium, hydraulic or other supports</text>
+              <text class="tb" x="480" y="182" text-anchor="middle" data-a="fade" data-at="2.6">Prevent soil movement</text>
+            </g>
+
+            <!-- 4 shielding -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Shielding</text></g>
+              <rect x="40" y="200" width="340" height="280" fill="url(#p-soil)" data-a="fade"/>
+              <rect x="580" y="200" width="340" height="280" fill="url(#p-soil)" data-a="fade"/>
+              <path class="ln" d="M40 200H380V480M580 480V200H920" data-a="draw" data-at=".2"/>
+              <g data-a="down" data-at=".9" data-d="1.2">
+                <rect class="fw ln" x="388" y="250" width="18" height="226"/><rect class="fw ln" x="554" y="250" width="18" height="226"/>
+                <path class="ln thick" d="M406 300H554M406 430H554"/>
+                <text class="ty" x="480" y="286" text-anchor="middle">Trench box</text>
+              </g>
+              <use href="#s-worker" x="452" y="300" width="56" height="140" data-a="up" data-at="2.2" style="opacity:.95"/>
+              <text class="tb" x="480" y="160" text-anchor="middle" data-a="fade" data-at="2.6">Prevents soil cave-ins</text>
+            </g>
+          </svg>
+          <svg class="lsvg" data-l="4" viewBox="0 0 960 540" role="img" aria-label="Animated drawing for the safety instructions" hidden>
+            <rect class="bg" width="960" height="540"/><rect width="960" height="540" fill="url(#p-grid)"/>
+
+            <!-- 1 inspect trenches -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Inspect trenches</text></g>
+              <rect x="40" y="260" width="200" height="220" fill="url(#p-soil)" data-a="fade"/><rect x="360" y="260" width="200" height="220" fill="url(#p-soil)" data-a="fade"/>
+              <path class="ln" d="M40 260H240V480M360 480V260H560" data-a="draw" data-at=".2"/>
+              <use href="#s-clip" x="250" y="130" width="100" height="125" data-a="pop" data-at=".9"/>
+              <g data-a="pop" data-at="1.4"><circle class="fy" cx="580" cy="166" r="22"/><path class="lny" d="M550 166h-12M622 166h-12M580 130v-10M556 142l-8-8M604 142l8-8"/><text class="tb" x="630" y="174">Start of each shift</text></g>
+              <g data-a="pop" data-at="2"><use href="#s-cloud" x="542" y="214" width="80" height="65"/><text class="tb" x="630" y="256">Following a rainstorm</text></g>
+              <g data-a="pop" data-at="2.6"><use href="#s-warn" x="550" y="304" width="62" height="56"/><text class="tb" x="630" y="340">Any other hazardous event</text></g>
+            </g>
+
+            <!-- 2 gas test -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Test before entering</text></g>
+              <rect x="40" y="220" width="220" height="260" fill="url(#p-soil)" data-a="fade"/><rect x="420" y="220" width="220" height="260" fill="url(#p-soil)" data-a="fade"/>
+              <path class="ln" d="M40 220H260V480M420 480V220H640" data-a="draw" data-at=".2"/>
+              <g data-a="lower" data-at=".8"><path class="ln" d="M340 100V300"/><use href="#s-meter" x="304" y="300" width="72" height="112"/></g>
+              <g data-a="pop" data-at="2.2"><rect class="chip" x="680" y="170" width="220" height="46" rx="23"/><use href="#s-ok" x="686" y="176" width="34" height="34"/><text class="tchip" x="730" y="200">Low oxygen</text></g>
+              <g data-a="pop" data-at="2.6"><rect class="chip" x="680" y="234" width="220" height="46" rx="23"/><use href="#s-ok" x="686" y="240" width="34" height="34"/><text class="tchip" x="730" y="264">Hazardous fumes</text></g>
+              <g data-a="pop" data-at="3"><rect class="chip" x="680" y="298" width="220" height="46" rx="23"/><use href="#s-ok" x="686" y="304" width="34" height="34"/><text class="tchip" x="730" y="328">Toxic gases</text></g>
+            </g>
+
+            <!-- 3 spoils two feet away -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Two feet from the edge</text></g>
+              <rect x="40" y="300" width="260" height="180" fill="url(#p-soil)" data-a="fade"/><rect x="420" y="300" width="500" height="180" fill="url(#p-soil)" data-a="fade"/>
+              <path class="ln" d="M40 300H300V480M420 480V300H920" data-a="draw" data-at=".2"/>
+              <path class="fa ln" d="M520 300q60-90 140 0z" data-a="right" data-at="1"/>
+              <use href="#s-machine" x="700" y="160" width="180" height="140" data-a="right" data-at="1.3"/>
+              <path class="dim" d="M420 330H520M420 318v24M520 318v24" data-a="draw" data-at="2.2"/>
+              <text class="ty" x="470" y="366" text-anchor="middle" data-a="pop" data-at="2.5">2 ft</text>
+              <text class="td" x="470" y="392" text-anchor="middle" data-a="fade" data-at="2.7">at least</text>
+              <text class="tb" x="80" y="200" data-a="fade" data-at="2.9">Heavy equipment and</text>
+              <text class="tb" x="80" y="230" data-a="fade" data-at="3">excavation spoils</text>
+            </g>
+
+            <!-- 4 safe access 4 feet -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Safe means of access</text></g>
+              <rect x="40" y="230" width="260" height="250" fill="url(#p-soil)" data-a="fade"/><rect x="460" y="230" width="260" height="250" fill="url(#p-soil)" data-a="fade"/>
+              <path class="ln" d="M40 230H300V480M460 480V230H720" data-a="draw" data-at=".2"/>
+              <path class="dim" d="M270 230V480M258 230h24M258 480h24" data-a="draw" data-at=".8"/>
+              <text class="ty" x="180" y="362" data-a="pop" data-at="1.2">4 ft</text><text class="td" x="160" y="388" data-a="fade" data-at="1.3">or deeper</text>
+              <use href="#s-ladder" x="330" y="160" width="70" height="320" data-a="down" data-at="1.6"/>
+              <g data-a="pop" data-at="2.4"><rect class="chip" x="760" y="200" width="150" height="44" rx="22"/><text class="tchip" x="835" y="229" text-anchor="middle">Stairways</text></g>
+              <g data-a="pop" data-at="2.7"><rect class="chip-y" x="760" y="258" width="150" height="44" rx="22"/><text class="tchip-d" x="835" y="287" text-anchor="middle">Ladders</text></g>
+              <g data-a="pop" data-at="3"><rect class="chip" x="760" y="316" width="150" height="44" rx="22"/><text class="tchip" x="835" y="345" text-anchor="middle">Ramps</text></g>
+            </g>
+
+            <!-- 5 ladders -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Strong, well-secured ladders</text></g>
+              <path class="lnd" d="M40 470H920" data-a="draw"/>
+              <rect class="fw ln" x="430" y="110" width="40" height="360" data-a="grow-y" data-at=".1"/>
+              <g transform="rotate(14 330 470)"><use href="#s-ladder" x="300" y="100" width="80" height="370" data-a="up" data-at=".4"/></g>
+              <ellipse class="dark" cx="381" cy="307" rx="16" ry="7" data-a="pop out" data-at="1 2"/>
+              <ellipse class="dark" cx="400" cy="230" rx="13" ry="6" data-a="pop out" data-at="1.1 2"/>
+              <ellipse class="dark" cx="359" cy="395" rx="14" ry="6" data-a="pop out" data-at="1.2 2"/>
+              <path class="rope" d="M414 112q30-16 36 8t-18 18" data-a="draw" data-at="2.6"/>
+              <text class="tb" x="560" y="210" data-a="fade" data-at="1.6">Free of oil, grease and</text>
+              <text class="tb" x="560" y="240" data-a="fade" data-at="1.7">other slipping hazards</text>
+              <use href="#s-ok" x="560" y="290" width="44" height="44" data-a="pop" data-at="3"/>
+              <text class="tb" x="616" y="320" data-a="fade" data-at="3.1">Top end tied securely</text>
+            </g>
+
+            <!-- 6 electrical -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Safe electrical connections</text></g>
+              <rect class="fw ln" x="120" y="150" width="110" height="150" rx="10" data-a="pop" data-at=".2"/>
+              <text class="td" x="175" y="140" text-anchor="middle" data-a="fade" data-at=".4">Distribution board</text>
+              <path class="lny" d="M175 300V390H560V330" data-a="draw" data-at=".8" data-d="1.2" style="stroke-width:10;stroke:var(--bp-dim)"/>
+              <path class="lny" d="M175 300V390H560V330" data-a="draw" data-at="1" data-d="1.2" style="stroke-width:3"/>
+              <text class="td" x="370" y="420" text-anchor="middle" data-a="fade" data-at="2">Insulated and safely secured conduit</text>
+              <rect class="fw ln" x="510" y="230" width="100" height="100" rx="12" data-a="pop" data-at=".6"/>
+              <circle class="ln" cx="546" cy="270" r="6" data-a="pop" data-at=".7"/><circle class="ln" cx="574" cy="270" r="6" data-a="pop" data-at=".7"/>
+              <g transform="rotate(180 560 210)"><use href="#s-plug" x="515" y="120" width="90" height="140" data-a="up" data-at="2.2"/></g>
+              <text class="tb" x="660" y="270" data-a="fade" data-at="2.8">Industrial safety</text>
+              <text class="tb" x="660" y="300" data-a="fade" data-at="2.9">pin &amp; plugs</text>
+            </g>
+
+            <!-- 7 lifting machinery -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Test lifting machinery and gear</text></g>
+              <rect class="fy ln" x="80" y="104" width="560" height="20" data-a="grow-x" data-at=".1"/>
+              <rect class="fy ln" x="80" y="124" width="30" height="346" data-a="grow-y" data-at=".2"/>
+              <path class="lnd" d="M40 470H920" data-a="draw"/>
+              <g data-a="swing" data-at=".8"><use href="#s-hook" x="380" y="124" width="70" height="175"/><rect class="fw ln" x="355" y="300" width="120" height="70" rx="6"/><text class="tchip" x="415" y="342" text-anchor="middle">Test load</text></g>
+              <g data-a="pop" data-at="2"><rect class="chip" x="660" y="170" width="230" height="46" rx="23"/><text class="tchip" x="775" y="200" text-anchor="middle">Cranes and hoists</text></g>
+              <g data-a="pop" data-at="2.4"><rect class="chip" x="660" y="234" width="230" height="46" rx="23"/><text class="tchip" x="775" y="264" text-anchor="middle">Ropes and shackles</text></g>
+              <use href="#s-cal" x="660" y="304" width="56" height="56" data-a="pop" data-at="2.8"/>
+              <text class="tb" x="728" y="340" data-a="fade" data-at="2.9">Periodically</text>
+            </g>
+
+            <!-- 8 access facilities -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Access facilities</text></g>
+              <path class="lnd" d="M40 470H920" data-a="draw"/>
+              <use href="#s-scaffold" x="100" y="190" width="220" height="280" data-a="grow-y" data-at=".2"/>
+              <use href="#s-ladder" x="370" y="190" width="70" height="280" data-a="up" data-at=".5"/>
+              <use href="#s-mag" x="200" y="150" width="110" height="110" data-a="float" data-at="1"/>
+              <g data-a="pop" data-at="1.8"><rect class="chip" x="560" y="200" width="200" height="46" rx="23"/><text class="tchip" x="660" y="230" text-anchor="middle">Inspection</text></g>
+              <g data-a="pop" data-at="2.6"><rect class="chip-y" x="560" y="264" width="200" height="46" rx="23"/><text class="tchip-d" x="660" y="294" text-anchor="middle">Rectification</text></g>
+            </g>
+
+            <!-- 9 artificial lighting -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Adequate artificial lighting</text></g>
+              <path class="lnd" d="M40 470H920"/>
+              <use href="#s-worker" x="430" y="270" width="80" height="200"/>
+              <path class="ln" d="M120 110H840" data-a="draw" data-at=".1"/>
+              <path class="ln" d="M240 110v30M480 110v30M720 110v30"/>
+              <circle class="glow" cx="240" cy="180" r="90" data-a="glow" data-at="1.4"/>
+              <circle class="glow" cx="480" cy="180" r="90" data-a="glow" data-at="1.7"/>
+              <circle class="glow" cx="720" cy="180" r="90" data-a="glow" data-at="2"/>
+              <use href="#s-bulb" x="212" y="138" width="56" height="88"/><use href="#s-bulb" x="452" y="138" width="56" height="88"/><use href="#s-bulb" x="692" y="138" width="56" height="88"/>
+              <rect class="dark" x="0" y="80" width="960" height="460" data-a="out" data-at="1.2" data-d="1.4"/>
+              <text class="td" x="480" y="510" text-anchor="middle" data-a="fade" data-at="2.6">Wherever natural light is inadequate</text>
+            </g>
+
+            <!-- 10 fire fighting -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Fire fighting equipment</text></g>
+              <use href="#s-ext" x="160" y="150" width="110" height="250" data-a="down" data-at=".2"/>
+              <g data-a="pop" data-at="1.2"><rect class="fw ln" x="290" y="250" width="150" height="74" rx="8"/><text class="td" x="304" y="278">Expiry date</text><text class="tb" x="304" y="306">Checked</text></g>
+              <path class="lnd" d="M268 250L290 286" data-a="draw" data-at="1.1"/>
+              <use href="#s-worker" x="560" y="250" width="60" height="150" data-a="up" data-at="1.8"/>
+              <use href="#s-worker" x="640" y="250" width="60" height="150" data-a="up" data-at="2"/>
+              <use href="#s-worker" x="720" y="250" width="60" height="150" data-a="up" data-at="2.2"/>
+              <text class="tb" x="670" y="440" text-anchor="middle" data-a="fade" data-at="2.6">All conversant to use them</text>
+              <text class="td" x="215" y="440" text-anchor="middle" data-a="fade" data-at="2.8">At potentially hazardous locations</text>
+            </g>
+
+            <!-- 11 wooden shavings -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Carpentry yard</text></g>
+              <path class="lnd" d="M40 470H920" data-a="draw"/>
+              <rect class="fa ln" x="120" y="300" width="300" height="24" data-a="grow-x" data-at=".2"/>
+              <path class="ln thick" d="M140 324v146M400 324v146" data-a="grow-y" data-at=".3"/>
+              <use href="#s-shav" x="440" y="400" width="200" height="88" data-a="pop sweep" data-at=".8 2.2"/>
+              <use href="#s-cal" x="680" y="180" width="80" height="80" data-a="pop" data-at="1.4"/>
+              <text class="tb" x="720" y="300" text-anchor="middle" data-a="fade" data-at="1.6">Every day</text>
+              <text class="td" x="720" y="326" text-anchor="middle" data-a="fade" data-at="1.7">remove wooden shavings</text>
+            </g>
+
+            <!-- 12 chemicals -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Handling chemicals</text></g>
+              <use href="#s-bottle" x="400" y="170" width="160" height="260" data-a="up" data-at=".2"/>
+              <use href="#s-resp" x="130" y="150" width="140" height="117" data-a="pop" data-at="1.2"/>
+              <text class="tb" x="200" y="300" text-anchor="middle" data-a="fade" data-at="1.3">Face mask</text>
+              <use href="#s-glove" x="150" y="330" width="80" height="110" data-a="pop" data-at="1.8"/>
+              <text class="tb" x="190" y="470" text-anchor="middle" data-a="fade" data-at="1.9">Hand gloves</text>
+              <use href="#s-goggles" x="650" y="200" width="180" height="77" data-a="pop" data-at="2.4"/>
+              <text class="tb" x="740" y="310" text-anchor="middle" data-a="fade" data-at="2.5">Eye protection</text>
+            </g>
+
+            <!-- 13 pests -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Control the menace</text></g>
+              <g data-a="pop" data-at=".3"><use href="#s-bug" x="110" y="140" width="110" height="86"/><text class="tchip" x="165" y="262" text-anchor="middle">Mosquito</text></g>
+              <g data-a="pop" data-at=".5"><use href="#s-bug" x="400" y="140" width="90" height="70"/><text class="tchip" x="445" y="262" text-anchor="middle">Flies</text></g>
+              <g data-a="pop" data-at=".7"><ellipse class="fw ln" cx="735" cy="186" rx="44" ry="26"/><circle class="fw ln" cx="782" cy="176" r="14"/><path class="ln" d="M691 190q-30 10-40-12"/><text class="tchip" x="735" y="262" text-anchor="middle">Rodents</text></g>
+              <g data-a="pop" data-at=".9"><path class="lno" d="M110 380q30-40 60 0t60 0 40-10" style="stroke:var(--green)"/><text class="tchip" x="165" y="452" text-anchor="middle">Snakes</text></g>
+              <g data-a="pop" data-at="1.1"><ellipse class="fw ln" cx="430" cy="380" rx="16" ry="30"/><ellipse class="fw ln" cx="460" cy="380" rx="16" ry="30"/><text class="tchip" x="445" y="452" text-anchor="middle">Termites</text></g>
+              <g data-a="pop" data-at="1.3"><use href="#s-bug" x="690" y="340" width="90" height="70"/><path class="lny" d="M722 380h26M722 392h26"/><text class="tchip" x="735" y="452" text-anchor="middle">Bees</text></g>
+              <use href="#s-no" x="120" y="128" width="90" height="90" data-a="pop" data-at="2"/>
+              <use href="#s-no" x="400" y="128" width="90" height="90" data-a="pop" data-at="2.15"/>
+              <use href="#s-no" x="690" y="140" width="90" height="90" data-a="pop" data-at="2.3"/>
+              <use href="#s-no" x="125" y="335" width="90" height="90" data-a="pop" data-at="2.45"/>
+              <use href="#s-no" x="400" y="335" width="90" height="90" data-a="pop" data-at="2.6"/>
+              <use href="#s-no" x="690" y="330" width="90" height="90" data-a="pop" data-at="2.75"/>
+            </g>
+
+            <!-- 14 first aid -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">First aid and snake bite kit</text></g>
+              <use href="#s-aid" x="110" y="150" width="190" height="152" data-a="down" data-at=".2"/>
+              <text class="tb" x="205" y="340" text-anchor="middle" data-a="fade" data-at=".7">First aid kit</text>
+              <use href="#s-aid" x="340" y="150" width="190" height="152" data-a="down" data-at=".6"/>
+              <path class="lno" d="M392 270q20-20 40 0t40 0" style="stroke:var(--green);stroke-width:5" data-a="draw" data-at="1.2"/>
+              <text class="tb" x="435" y="340" text-anchor="middle" data-a="fade" data-at="1.1">Snake bite kit</text>
+              <use href="#s-worker" x="610" y="230" width="60" height="150" data-a="up" data-at="1.8"/>
+              <use href="#s-worker" x="690" y="230" width="60" height="150" data-a="up" data-at="2"/>
+              <use href="#s-worker" x="770" y="230" width="60" height="150" data-a="up" data-at="2.2"/>
+              <text class="tb" x="720" y="420" text-anchor="middle" data-a="fade" data-at="2.6">Train as many people</text>
+              <text class="tb" x="720" y="450" text-anchor="middle" data-a="fade" data-at="2.7">as possible</text>
+            </g>
+
+            <!-- 15 sloping roofs -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Potentially dangerous locations</text></g>
+              <path class="lnd" d="M40 470H920" data-a="draw"/>
+              <path class="fw ln" d="M120 300L340 150L560 300Z" data-a="pop" data-at=".2"/>
+              <rect class="fw ln" x="150" y="300" width="380" height="170" data-a="grow-y" data-at=".4"/>
+              <path class="hl" d="M136 290L340 150L544 290" data-a="draw" data-at="1"/>
+              <use href="#s-warn" x="290" y="188" width="100" height="90" data-a="pulse" data-at="1.6"/>
+              <text class="tb" x="640" y="230" data-a="fade" data-at="2">Sloping roofs</text>
+              <text class="td" x="640" y="260" data-a="fade" data-at="2.2">Potentially dangerous locations</text>
+            </g>
+          </svg>
+          <svg class="lsvg" data-l="5" viewBox="0 0 960 540" role="img" aria-label="Animated drawing for safety training and education" hidden>
+            <rect class="bg" width="960" height="540"/><rect width="960" height="540" fill="url(#p-grid)"/>
+
+            <!-- 1 mock drill -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Mock emergency drill</text></g>
+              <use href="#s-cal" x="80" y="120" width="90" height="90" data-a="pop" data-at=".2"/>
+              <text class="tb" x="190" y="160" data-a="fade" data-at=".5">Once in a month</text>
+              <g data-a="up" data-at="1"><rect class="card" x="60" y="250" width="240" height="190" rx="14"/><use href="#s-ext" x="148" y="264" width="64" height="120"/><text class="tchip" x="180" y="414" text-anchor="middle">Fire fighting</text></g>
+              <path class="rope" d="M310 345h40" marker-end="url(#m-arr)" data-a="draw" data-at="1.6"/>
+              <g data-a="up" data-at="1.9"><rect class="card" x="360" y="250" width="240" height="190" rx="14"/><use href="#s-aid" x="415" y="280" width="130" height="104"/><text class="tchip" x="480" y="414" text-anchor="middle">A minor injury</text></g>
+              <path class="rope" d="M610 345h40" marker-end="url(#m-arr)" data-a="draw" data-at="2.5"/>
+              <g data-a="up" data-at="2.8"><rect class="card" x="660" y="250" width="250" height="190" rx="14"/><use href="#s-amb" x="695" y="276" width="180" height="108"/><text class="tchip" x="785" y="414" text-anchor="middle">To the nearest hospital</text></g>
+            </g>
+
+            <!-- 2 educate, escape route -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Emergency escape route</text></g>
+              <rect class="fw ln" x="80" y="120" width="560" height="340" rx="8" data-a="fade" data-at=".1"/>
+              <path class="lnd" d="M260 120v150M260 330v130M460 120v200M80 300h120M460 380h180" data-a="draw" data-at=".3"/>
+              <use href="#s-worker" x="140" y="330" width="44" height="110" data-a="up" data-at=".8"/>
+              <use href="#s-worker" x="320" y="180" width="44" height="110" data-a="up" data-at=".9"/>
+              <path class="lny" d="M190 400H300V300H420V200H560V150H640" style="stroke:var(--green);stroke-dasharray:12 10;stroke-width:6" data-a="draw" data-at="1.4" data-d="1.8"/>
+              <use href="#s-exit" x="660" y="120" width="120" height="60" data-a="pop" data-at="2.8"/>
+              <text class="tb" x="660" y="240" data-a="fade" data-at="3.2">Well-defined</text>
+              <text class="td" x="660" y="268" data-a="fade" data-at="3.3">Safe work practices taught</text>
+              <text class="td" x="660" y="292" data-a="fade" data-at="3.4">on a regular basis</text>
+            </g>
+
+            <!-- 3 uniform pace, always on alert -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Uniform pace, always alert</text></g>
+              <path class="lnd" d="M80 440H520" data-a="draw"/>
+              <rect class="fa ln" x="100" y="300" width="50" height="140" rx="4" data-a="grow-y" data-at=".4"/>
+              <rect class="fa ln" x="180" y="300" width="50" height="140" rx="4" data-a="grow-y" data-at=".6"/>
+              <rect class="fa ln" x="260" y="300" width="50" height="140" rx="4" data-a="grow-y" data-at=".8"/>
+              <rect class="fa ln" x="340" y="300" width="50" height="140" rx="4" data-a="grow-y" data-at="1"/>
+              <rect class="fa ln" x="420" y="300" width="50" height="140" rx="4" data-a="grow-y" data-at="1.2"/>
+              <path class="lny" d="M90 300H480" style="stroke-dasharray:8 8;stroke-width:3" data-a="draw" data-at="1.6"/>
+              <text class="tb" x="290" y="480" text-anchor="middle" data-a="fade" data-at="1.8">A uniform pace of work</text>
+              <use href="#s-worker" x="580" y="200" width="100" height="250" data-a="up" data-at=".6"/>
+              <text class="tq" x="700" y="250" data-a="pulse" data-at="2.2" style="font-size:90px">!</text>
+              <text class="tb" x="630" y="490" text-anchor="middle" data-a="fade" data-at="2.6">Always on alert</text>
+            </g>
+
+            <!-- 4 emergency contacts displayed -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Emergency contacts displayed</text></g>
+              <g data-a="down" data-at=".2"><path class="ln thick" d="M380 400v80"/><rect class="card" x="220" y="110" width="320" height="300" rx="12"/><text class="tb" x="380" y="150" text-anchor="middle">In case of emergency</text></g>
+              <g data-a="left" data-at="1"><use href="#s-phone" x="250" y="180" width="28" height="28"/><text class="t" x="292" y="201">Site in-charge</text></g>
+              <g data-a="left" data-at="1.3"><use href="#s-phone" x="250" y="236" width="28" height="28"/><text class="t" x="292" y="257">Fire</text></g>
+              <g data-a="left" data-at="1.6"><use href="#s-phone" x="250" y="292" width="28" height="28"/><text class="t" x="292" y="313">Ambulance</text></g>
+              <g data-a="left" data-at="1.9"><use href="#s-phone" x="250" y="348" width="28" height="28"/><text class="t" x="292" y="369">Nearest hospital</text></g>
+              <use href="#s-worker" x="640" y="230" width="90" height="225" data-a="up" data-at="2.4"/>
+              <use href="#s-eye" x="620" y="160" width="110" height="64" data-a="pop" data-at="2.8"/>
+              <text class="td" x="380" y="510" text-anchor="middle" data-a="fade" data-at="3">Names of persons or departments</text>
+            </g>
+
+            <!-- 5 safety signs around the site -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Safety signs around the site</text></g>
+              <rect class="zone" x="160" y="130" width="560" height="320" rx="16" data-a="draw" data-at=".2" data-d="1.4"/>
+              <rect class="fw ln" x="360" y="230" width="160" height="120" rx="6" data-a="pop" data-at=".8"/>
+              <text class="td" x="440" y="296" text-anchor="middle" data-a="fade" data-at="1">Work area</text>
+              <use href="#s-warn" x="120" y="100" width="80" height="72" data-a="pulse" data-at="1.4"/>
+              <use href="#s-warn" x="680" y="100" width="80" height="72" data-a="pulse" data-at="1.7"/>
+              <use href="#s-warn" x="120" y="410" width="80" height="72" data-a="pulse" data-at="2"/>
+              <use href="#s-warn" x="400" y="410" width="80" height="72" data-a="pulse" data-at="2.3"/>
+              <use href="#s-warn" x="680" y="300" width="80" height="72" data-a="pulse" data-at="2.6"/>
+              <text class="tb" x="780" y="200" data-a="fade" data-at="3">Warn of</text>
+              <text class="tb" x="780" y="228" data-a="fade" data-at="3.1">potential</text>
+              <text class="tb" x="780" y="256" data-a="fade" data-at="3.2">danger</text>
+            </g>
+
+            <!-- 6 sumps covered -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Water sources like sumps</text></g>
+              <rect x="40" y="300" width="300" height="200" fill="url(#p-soil)" data-a="fade"/><rect x="560" y="300" width="360" height="200" fill="url(#p-soil)" data-a="fade"/>
+              <path class="ln" d="M40 300H340V500H560V300H920" data-a="draw" data-at=".2"/>
+              <rect class="fwater" x="342" y="360" width="216" height="138" data-a="grow-y" data-at=".6"/>
+              <rect class="fa ln" x="320" y="286" width="260" height="16" rx="3" data-a="right" data-at="1.6"/>
+              <text class="tb" x="450" y="270" text-anchor="middle" data-a="fade" data-at="2">Covered</text>
+              <path class="ln thick" d="M620 300V200M760 300V200" data-a="grow-y" data-at="2.4"/>
+              <path class="tape" d="M620 220H760" data-a="grow-x" data-at="2.7"/>
+              <text class="tb" x="690" y="180" text-anchor="middle" data-a="fade" data-at="3">or barricaded</text>
+            </g>
+
+            <!-- 7 stacking avoids accidents -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Proper method of stacking</text></g>
+              <path class="lnd" d="M40 440H920" data-a="draw"/>
+              <g data-a="up" data-at=".4"><rect class="fa ln" x="120" y="380" width="80" height="60"/><rect class="fa ln" x="200" y="380" width="80" height="60"/><rect class="fa ln" x="280" y="380" width="80" height="60"/></g>
+              <g data-a="up" data-at=".7"><rect class="fa ln" x="120" y="320" width="80" height="60"/><rect class="fa ln" x="200" y="320" width="80" height="60"/><rect class="fa ln" x="280" y="320" width="80" height="60"/></g>
+              <g data-a="up" data-at="1"><rect class="fa ln" x="160" y="260" width="80" height="60"/><rect class="fa ln" x="240" y="260" width="80" height="60"/></g>
+              <use href="#s-ok" x="210" y="180" width="60" height="60" data-a="pop" data-at="1.6"/>
+              <g data-a="fade" data-at="2"><rect class="fw ln" x="580" y="380" width="80" height="60" transform="rotate(-12 620 410)"/><rect class="fw ln" x="650" y="360" width="80" height="60" transform="rotate(18 690 390)"/><rect class="fw ln" x="610" y="300" width="80" height="60" transform="rotate(-30 650 330)"/></g>
+              <use href="#s-bad" x="640" y="200" width="60" height="60" data-a="pop" data-at="2.6"/>
+              <text class="tb" x="480" y="500" text-anchor="middle" data-a="fade" data-at="3">Good housekeeping avoids accidents</text>
+            </g>
+          </svg>
+
+          <svg class="lsvg" data-l="6" viewBox="0 0 960 540" role="img" aria-label="Animated drawing for housekeeping" hidden>
+            <rect class="bg" width="960" height="540"/><rect width="960" height="540" fill="url(#p-grid)"/>
+
+            <!-- 1 dustbins in common areas -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Dustbin in common areas</text></g>
+              <rect class="fw ln" x="100" y="120" width="560" height="340" rx="8" data-a="fade" data-at=".1"/>
+              <path class="lnd" d="M300 120v120M300 330v130M480 120v340M100 290h200" data-a="draw" data-at=".3"/>
+              <text class="td" x="390" y="300" text-anchor="middle" data-a="fade" data-at=".8">Common area</text>
+              <use href="#s-bin" x="360" y="160" width="60" height="80" data-a="down" data-at="1.2"/>
+              <use href="#s-bin" x="360" y="350" width="60" height="80" data-a="down" data-at="1.5"/>
+              <use href="#s-bin" x="550" y="240" width="60" height="80" data-a="down" data-at="1.8"/>
+              <use href="#s-bin" x="700" y="200" width="150" height="200" data-a="pop" data-at="2.4"/>
+            </g>
+
+            <!-- 2 clean debris regularly -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Keep the site clean at all times</text></g>
+              <path class="lnd" d="M40 440H920" data-a="draw"/>
+              <g data-a="pop sweep" data-at=".4 2"><path class="fw ln" d="M160 440l20-30 30 10 20-24 30 44z"/><path class="fw ln" d="M300 440l14-22 24 8 12-16 22 30z"/><rect class="fw ln" x="400" y="418" width="30" height="22" transform="rotate(-14 415 429)"/><path class="fw ln" d="M470 440l18-26 28 12 14 14z"/></g>
+              <g data-a="right sweep" data-at="1 2"><path class="ln thick" d="M620 260l-80 170"/><path class="fa ln" d="M520 420l50 22-12 22-60-20z"/></g>
+              <use href="#s-ok" x="440" y="220" width="70" height="70" data-a="pop" data-at="3"/>
+              <text class="tb" x="475" y="330" text-anchor="middle" data-a="fade" data-at="3.2">Cleaned regularly</text>
+            </g>
+
+            <!-- 3 bin capacity -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Dust bin capacity</text></g>
+              <use href="#s-bin" x="150" y="150" width="210" height="280" data-a="up" data-at=".2"/>
+              <text class="tbig" x="255" y="330" text-anchor="middle" data-a="pop" data-at="1" style="fill:var(--on-yellow)">150 L</text>
+              <text class="tq" x="430" y="330" data-a="fade" data-at="1.5" style="font-size:70px;fill:var(--bp-line)">per</text>
+              <rect class="zone" x="560" y="150" width="280" height="280" data-a="draw" data-at="1.8"/>
+              <text class="tbig" x="700" y="300" text-anchor="middle" data-a="pop" data-at="2.4">5000 sft</text>
+              <text class="td" x="700" y="330" text-anchor="middle" data-a="fade" data-at="2.6">of built up area</text>
+            </g>
+
+            <!-- 4 debris yard and tractor -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Debris yard</text></g>
+              <path class="lnd" d="M40 440H920" data-a="draw"/>
+              <rect class="zone" x="80" y="260" width="300" height="180" data-a="draw" data-at=".2"/>
+              <path class="fw ln" d="M110 440q60-130 130-60 40-50 110 60z" data-a="grow-y" data-at=".6"/>
+              <text class="ty" x="230" y="250" text-anchor="middle" data-a="fade" data-at="1">Common point</text>
+              <use href="#s-tractor" x="460" y="310" width="260" height="130" data-a="right" data-at="1.4" data-d="1.4"/>
+              <path class="rope" d="M450 380h-50" marker-end="url(#m-arr)" data-a="draw" data-at="2.6"/>
+              <use href="#s-cal" x="760" y="140" width="80" height="80" data-a="pop" data-at="2.8"/>
+              <text class="tb" x="800" y="250" text-anchor="middle" data-a="fade" data-at="3">Shifted daily</text>
+            </g>
+
+            <!-- 5 stack away from traffic -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Away from heavy traffic areas</text></g>
+              <rect class="fbp2" x="40" y="330" width="880" height="110" data-a="fade"/>
+              <path class="lnw" d="M40 385H920" style="stroke-dasharray:30 24" data-a="draw" data-at=".2"/>
+              <text class="td" x="60" y="430" data-a="fade" data-at=".4">Heavy traffic area</text>
+              <use href="#s-tractor" x="40" y="320" width="180" height="90" data-a="waves" data-at=".6"/>
+              <g data-a="up" data-at="1.4"><rect class="fa ln" x="560" y="200" width="70" height="40"/><rect class="fa ln" x="630" y="200" width="70" height="40"/><rect class="fa ln" x="700" y="200" width="70" height="40"/><rect class="fa ln" x="595" y="160" width="70" height="40"/><rect class="fa ln" x="665" y="160" width="70" height="40"/></g>
+              <path class="dim" d="M840 240V330M828 240h24M828 330h24" data-a="draw" data-at="2.2"/>
+              <text class="tb" x="560" y="140" data-a="fade" data-at="2.6">Stacked neatly</text>
+            </g>
+
+            <!-- 6 housekeeping team -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">A dedicated housekeeping team</text></g>
+              <g data-a="up" data-at=".4"><rect class="card" x="80" y="120" width="370" height="330" rx="16"/><text class="td" x="110" y="160">During the construction of structure</text>
+                <use href="#s-worker" x="120" y="200" width="70" height="175"/><text class="tbig" x="210" y="290">1 person</text><text class="ty" x="210" y="326">per 30,000 Sft</text><text class="td" x="110" y="420">of floor area</text></g>
+              <g data-a="up" data-at="1.8"><rect class="card" x="500" y="120" width="380" height="330" rx="16"/><text class="td" x="530" y="160">After structure is completed</text>
+                <use href="#s-worker" x="540" y="200" width="70" height="175"/><text class="tbig" x="630" y="290">1 person</text><text class="ty" x="630" y="326">per 20,000 Sft</text><text class="td" x="530" y="420">of floor area</text></g>
+              <text class="td" x="480" y="490" text-anchor="middle" data-a="fade" data-at="3">Work supervised on a daily basis</text>
+            </g>
+
+            <!-- 7 preliminary cleaning vs squad -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Who cleans what</text></g>
+              <path class="lnd" d="M40 440H920" data-a="draw"/>
+              <use href="#s-worker" x="150" y="220" width="88" height="220" data-a="up" data-at=".3"/>
+              <text class="tb" x="194" y="160" text-anchor="middle" data-a="fade" data-at=".7">Contractor/ tradesman</text>
+              <text class="td" x="194" y="186" text-anchor="middle" data-a="fade" data-at=".8">Preliminary cleaning</text>
+              <path class="rope" d="M290 330h120" marker-end="url(#m-arr)" data-a="draw" data-at="1.4"/>
+              <use href="#s-worker" x="480" y="250" width="76" height="190" data-a="up" data-at="1.8"/>
+              <use href="#s-worker" x="570" y="250" width="76" height="190" data-a="up" data-at="2"/>
+              <use href="#s-worker" x="660" y="250" width="76" height="190" data-a="up" data-at="2.2"/>
+              <text class="tb" x="608" y="190" text-anchor="middle" data-a="fade" data-at="2.6">Housekeeping squad</text>
+              <text class="td" x="608" y="216" text-anchor="middle" data-a="fade" data-at="2.7">General cleaning and carting of debris</text>
+            </g>
+
+            <!-- 8 granite slabs on MS stands -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Granite slabs on MS stands</text></g>
+              <path class="lnd" d="M40 440H920" data-a="draw"/>
+              <path class="ln thick" d="M380 440L460 170L540 440M410 340h100" data-a="draw" data-at=".3"/>
+              <g data-a="left" data-at="1"><rect class="fw ln" x="348" y="190" width="16" height="250" transform="rotate(15 356 440)"/><rect class="fw ln" x="326" y="190" width="16" height="250" transform="rotate(15 334 440)"/></g>
+              <g data-a="right" data-at="1.4"><rect class="fw ln" x="556" y="190" width="16" height="250" transform="rotate(-15 564 440)"/><rect class="fw ln" x="578" y="190" width="16" height="250" transform="rotate(-15 586 440)"/></g>
+              <path class="dim" d="M260 470H660" data-a="draw" data-at="2"/>
+              <text class="tb" x="460" y="500" text-anchor="middle" data-a="fade" data-at="2.2">Level ground</text>
+              <text class="tb" x="720" y="240" data-a="fade" data-at="2.6">Balance on</text>
+              <text class="tb" x="720" y="270" data-a="fade" data-at="2.7">both sides</text>
+            </g>
+
+            <!-- 9 temporary doors with locks -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Temporary doors with locks</text></g>
+              <path class="lnd" d="M40 450H920" data-a="draw"/>
+              <rect class="fw ln" x="120" y="150" width="440" height="300" data-a="fade" data-at=".1"/>
+              <use href="#s-door" x="280" y="230" width="120" height="220" data-a="grow-y" data-at=".6"/>
+              <use href="#s-lock" x="364" y="320" width="52" height="66" data-a="down" data-at="1.6"/>
+              <text class="tb" x="620" y="250" data-a="fade" data-at="2.2">At entrances</text>
+              <text class="tb" x="620" y="280" data-a="fade" data-at="2.3">of apartments</text>
+              <text class="td" x="620" y="320" data-a="fade" data-at="2.6">Reduces the area of</text>
+              <text class="td" x="620" y="344" data-a="fade" data-at="2.7">liability for cleaning</text>
+            </g>
+
+            <!-- 10 sand in a remote corner -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Sand in a remote corner</text></g>
+              <path class="ln thick" d="M140 120V460H640" data-a="draw" data-at=".1"/>
+              <text class="td" x="390" y="500" text-anchor="middle" data-a="fade" data-at=".4">Room in an apartment (plan)</text>
+              <path class="fa" d="M146 300q40-30 90-10t100 30q20 20 10 50t-30 70H146z" data-a="grow-y" data-at=".8"/>
+              <path class="fw ln" d="M146 270h40v24h-40zM190 270h40v24h-40zM234 280h40v24h-40zM278 300h40v24h-40zM330 330h24v40h-24zM340 374h24v40h-24zM344 418h24v40h-24z" data-a="fade" data-at="1.8"/>
+              <text class="tb" x="460" y="250" data-a="fade" data-at="2.4">Blocks around the edges</text>
+              <text class="td" x="460" y="280" data-a="fade" data-at="2.6">Sand doesn’t spread with movement</text>
+            </g>
+
+            <!-- 11 no smoking or tobacco -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Strictly prohibited at site</text></g>
+              <use href="#s-cig" x="150" y="210" width="240" height="105" data-a="left" data-at=".3"/>
+              <use href="#s-no" x="170" y="150" width="200" height="200" data-a="pop" data-at="1.2"/>
+              <text class="tb" x="270" y="400" text-anchor="middle" data-a="fade" data-at="1.5">Smoking</text>
+              <g data-a="right" data-at=".6"><rect class="fo ln" x="580" y="200" width="120" height="110" rx="14"/><path class="ln" d="M580 236h120"/></g>
+              <use href="#s-no" x="540" y="155" width="200" height="200" data-a="pop" data-at="1.8"/>
+              <text class="tb" x="640" y="400" text-anchor="middle" data-a="fade" data-at="2.1">Chewing tobacco</text>
+            </g>
+
+            <!-- 12 heavy penalty -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Heavy penalty as a deterrent</text></g>
+              <g data-a="down" data-at=".2"><rect class="card" x="320" y="110" width="320" height="190" rx="14"/><text class="td" x="350" y="150">Penalty</text><text class="tbig" x="350" y="220">Heavy</text><path class="lnd" d="M350 254h240"/></g>
+              <g data-a="up" data-at="1.2"><rect class="chip" x="100" y="350" width="200" height="46" rx="23"/><text class="tchip" x="200" y="380" text-anchor="middle">Littering</text></g>
+              <g data-a="up" data-at="1.5"><rect class="chip" x="340" y="350" width="280" height="46" rx="23"/><text class="tchip" x="480" y="380" text-anchor="middle">Doing nuisance at site</text></g>
+              <g data-a="up" data-at="1.8"><rect class="chip" x="660" y="350" width="240" height="46" rx="23"/><text class="tchip" x="780" y="380" text-anchor="middle">Not observing safety</text></g>
+              <path class="link" d="M200 346L380 300M480 346V300M780 346L580 300" data-a="draw" data-at="2.3"/>
+            </g>
+          </svg>
+          <svg class="lsvg" data-l="7" viewBox="0 0 960 540" role="img" aria-label="Animated drawing for inspection of personnel" hidden>
+            <rect class="bg" width="960" height="540"/><rect width="960" height="540" fill="url(#p-grid)"/>
+
+            <!-- 1 helmets mandatory -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Entire site hard-hatted</text></g>
+              <path class="lnd" d="M40 440H920" data-a="draw"/>
+              <use href="#s-worker" x="120" y="240" width="80" height="200" data-a="up" data-at=".3"/>
+              <use href="#s-worker" x="250" y="240" width="80" height="200" data-a="up" data-at=".5"/>
+              <use href="#s-worker" x="380" y="240" width="80" height="200" data-a="up" data-at=".7"/>
+              <use href="#s-worker" x="510" y="240" width="80" height="200" data-a="up" data-at=".9"/>
+              <use href="#s-worker" x="640" y="240" width="80" height="200" data-a="up" data-at="1.1"/>
+              <use href="#s-ok" x="140" y="180" width="40" height="40" data-a="pop" data-at="1.6"/><use href="#s-ok" x="270" y="180" width="40" height="40" data-a="pop" data-at="1.8"/>
+              <use href="#s-ok" x="400" y="180" width="40" height="40" data-a="pop" data-at="2"/><use href="#s-ok" x="530" y="180" width="40" height="40" data-a="pop" data-at="2.2"/>
+              <use href="#s-ok" x="660" y="180" width="40" height="40" data-a="pop" data-at="2.4"/>
+              <text class="tb" x="420" y="140" text-anchor="middle" data-a="fade" data-at="2.8">Safety helmets: absolutely mandatory</text>
+            </g>
+
+            <!-- 2 warning boards at vantage points -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Boards at vantage points</text></g>
+              <path class="lnd" d="M40 460H920" data-a="draw"/>
+              <g data-a="down" data-at=".3"><use href="#s-sign" x="140" y="160" width="200" height="300"/><use href="#s-helmet" x="185" y="180" width="110" height="74"/><text class="tchip-d" x="240" y="292" text-anchor="middle">HELMET</text><text class="tchip-d" x="240" y="316" text-anchor="middle">MANDATORY</text></g>
+              <use href="#s-worker" x="520" y="260" width="80" height="200" data-a="up" data-at="1.2"/>
+              <use href="#s-worker" x="660" y="260" width="80" height="200" data-a="up" data-at="1.4"/>
+              <path class="link" d="M560 250Q440 160 344 230M700 250Q500 120 344 220" data-a="draw" data-at="2"/>
+              <text class="td" x="640" y="500" text-anchor="middle" data-a="fade" data-at="2.6">Seen by everyone entering</text>
+            </g>
+
+            <!-- 3 safety belts compulsory -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Safety belts compulsory</text></g>
+              <path class="lnd" d="M40 460H920" data-a="draw"/>
+              <use href="#s-worker" x="360" y="160" width="120" height="300" data-a="up" data-at=".3"/>
+              <use href="#s-harness" x="384" y="262" width="72" height="122" data-a="pop" data-at="1.2"/>
+              <circle class="fy ln" cx="420" cy="110" r="12" data-a="pop" data-at="1.8"/>
+              <path class="rope" d="M420 122V320" data-a="draw" data-at="2"/>
+              <use href="#s-ok" x="560" y="220" width="64" height="64" data-a="pop" data-at="2.6"/>
+            </g>
+
+            <!-- 4 goggles and ear plugs on grinding -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Shearing / grinding machines</text></g>
+              <path class="lnd" d="M40 460H920" data-a="draw"/>
+              <use href="#s-worker-bare" x="240" y="160" width="120" height="300" data-a="up" data-at=".2"/>
+              <use href="#s-goggles" x="266" y="231" width="68" height="29" data-a="down" data-at="1.4"/>
+              <circle class="fy ln" cx="276" cy="262" r="6" data-a="pop" data-at="2"/><circle class="fy ln" cx="324" cy="262" r="6" data-a="pop" data-at="2.1"/>
+              <use href="#s-grinder" x="380" y="300" width="200" height="110" data-a="right" data-at=".6"/>
+              <path class="lny" d="M410 410l-30 30M430 412l-14 40M396 400l-44 14" data-a="wave" data-at="1"/>
+              <g data-a="pop" data-at="2.4"><rect class="chip" x="640" y="190" width="200" height="46" rx="23"/><text class="tchip" x="740" y="220" text-anchor="middle">Safety goggles</text></g>
+              <g data-a="pop" data-at="2.7"><rect class="chip" x="640" y="254" width="200" height="46" rx="23"/><text class="tchip" x="740" y="284" text-anchor="middle">Ear plugs</text></g>
+            </g>
+
+            <!-- 5 gloves -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Gloves for dangerous activities</text></g>
+              <use href="#s-glove" x="300" y="150" width="150" height="206" data-a="left" data-at=".3"/>
+              <g transform="translate(1020 0) scale(-1 1)"><use href="#s-glove" x="450" y="150" width="150" height="206" data-a="left" data-at=".6"/></g>
+              <text class="tb" x="480" y="420" text-anchor="middle" data-a="fade" data-at="1.4">For all dangerous activities</text>
+            </g>
+
+            <!-- 6 gum boots during concreting -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Gum boots during concreting</text></g>
+              <rect class="fw" x="40" y="380" width="880" height="100" data-a="grow-x" style="fill:rgba(230,239,247,.22)"/>
+              <path class="ln" d="M40 380H920" data-a="draw"/>
+              <use href="#s-boot" x="300" y="250" width="140" height="153" data-a="down" data-at=".8"/>
+              <use href="#s-boot" x="450" y="250" width="140" height="153" data-a="down" data-at="1.1"/>
+              <text class="td" x="120" y="440" data-a="fade" data-at="1.6">Wet concrete</text>
+              <use href="#s-ok" x="640" y="270" width="60" height="60" data-a="pop" data-at="2"/>
+            </g>
+
+            <!-- 7 stretcher and first aid -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Stretcher and first aid kit</text></g>
+              <use href="#s-stretcher" x="120" y="250" width="380" height="117" data-a="right" data-at=".3"/>
+              <text class="tb" x="310" y="420" text-anchor="middle" data-a="fade" data-at=".9">Stretcher</text>
+              <use href="#s-aid" x="590" y="220" width="200" height="160" data-a="down" data-at="1.2"/>
+              <text class="tb" x="690" y="420" text-anchor="middle" data-a="fade" data-at="1.8">First aid kit</text>
+              <text class="td" x="480" y="480" text-anchor="middle" data-a="fade" data-at="2.2">On each site, for emergencies</text>
+            </g>
+          </svg>
+
+          <svg class="lsvg" data-l="8" viewBox="0 0 960 540" role="img" aria-label="Animated drawing for barricading" hidden>
+            <rect class="bg" width="960" height="540"/><rect width="960" height="540" fill="url(#p-grid)"/>
+
+            <!-- 1 trench barricade 1 m -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Trenches barricaded</text></g>
+              <rect x="40" y="320" width="360" height="180" fill="url(#p-soil)" data-a="fade"/><rect x="560" y="320" width="360" height="180" fill="url(#p-soil)" data-a="fade"/>
+              <path class="ln" d="M40 320H400V500M560 500V320H920" data-a="draw" data-at=".2"/>
+              <path class="ln thick" d="M280 320V200" data-a="grow-y" data-at=".8"/><path class="ln thick" d="M680 320V200" data-a="grow-y" data-at=".9"/>
+              <path class="tape" d="M100 214H280M680 214H860" data-a="grow-x" data-at="1.2"/>
+              <path class="dim" d="M280 350H400M280 338v24M400 338v24" data-a="draw" data-at="1.8"/>
+              <text class="ty" x="340" y="392" text-anchor="middle" data-a="pop" data-at="2">1 m</text>
+              <path class="dim" d="M250 200V320M238 200h24M238 320h24" data-a="draw" data-at="2.4"/>
+              <text class="ty" x="212" y="266" text-anchor="end" data-a="pop" data-at="2.6">1 m high</text>
+              <text class="td" x="340" y="420" text-anchor="middle" data-a="fade" data-at="2.2">from the edge</text>
+            </g>
+
+            <!-- 2 staircases -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">All staircases barricaded</text></g>
+              <path class="fw ln" d="M160 460V400H240V340H320V280H400V220H480V160H560V460Z" data-a="grow-y" data-at=".2"/>
+              <path class="ln thick" d="M200 400V320M440 220V140" data-a="grow-y" data-at="1"/>
+              <path class="tape" d="M200 340L440 160" data-a="draw" data-at="1.4"/>
+              <use href="#s-ok" x="640" y="240" width="64" height="64" data-a="pop" data-at="2.2"/>
+            </g>
+
+            <!-- 3 lift shafts after deshuttering -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Lift shafts barricaded</text></g>
+              <rect class="fw ln" x="120" y="110" width="420" height="380" data-a="fade" data-at=".1"/>
+              <rect class="fbp2 ln" x="250" y="170" width="160" height="320" data-a="pop" data-at=".4"/>
+              <text class="td" x="330" y="160" text-anchor="middle" data-a="fade" data-at=".6">Lift shaft</text>
+              <g data-a="grow-y" data-at="1.4"><rect class="fa ln" x="244" y="300" width="172" height="24"/><rect class="fa ln" x="244" y="360" width="172" height="24"/><path class="ln thick" d="M256 290v200M404 290v200"/></g>
+              <text class="tb" x="600" y="260" data-a="fade" data-at="2">Immediately after</text>
+              <text class="tb" x="600" y="290" data-a="fade" data-at="2.1">deshuttering</text>
+            </g>
+
+            <!-- 4 solid and tape barricading -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Solid and tape barricading</text></g>
+              <path class="lnd" d="M40 440H920" data-a="draw"/>
+              <g data-a="grow-y" data-at=".4"><rect class="fa ln" x="100" y="250" width="320" height="190"/><path class="ln" d="M180 250v190M260 250v190M340 250v190"/></g>
+              <text class="tb" x="260" y="220" text-anchor="middle" data-a="fade" data-at="1">Solid: necessary areas</text>
+              <path class="ln thick" d="M560 440V300M720 440V300M880 440V300" data-a="grow-y" data-at="1.6"/>
+              <path class="tape" d="M560 320H880M560 370H880" data-a="grow-x" data-at="2"/>
+              <text class="tb" x="720" y="270" text-anchor="middle" data-a="fade" data-at="2.4">Tape: additional areas</text>
+            </g>
+          </svg>
+
+          <svg class="lsvg" data-l="9" viewBox="0 0 960 540" role="img" aria-label="Animated drawing for lighting" hidden>
+            <rect class="bg" width="960" height="540"/><rect width="960" height="540" fill="url(#p-grid)"/>
+
+            <!-- 1 floodlit -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Floodlit with halogen lamps</text></g>
+              <path class="lnd" d="M40 460H920"/>
+              <rect class="fw ln" x="420" y="300" width="300" height="160"/><rect class="fw ln" x="460" y="200" width="220" height="100"/>
+              <path class="ln thick" d="M160 460V140M800 460V140"/>
+              <path class="glow" d="M180 150L700 460H300Z" data-a="glow" data-at="1.4"/>
+              <path class="glow" d="M780 150L360 460H860Z" data-a="glow" data-at="1.7"/>
+              <use href="#s-flood" x="120" y="96" width="90" height="68"/><use href="#s-flood" x="750" y="96" width="90" height="68"/>
+              <rect class="dark" x="0" y="80" width="960" height="460" data-a="out" data-at="1.2" data-d="1.4"/>
+              <text class="tb" x="480" y="140" text-anchor="middle" data-a="fade" data-at="2.6">Entire site</text>
+            </g>
+
+            <!-- 2 staircases top priority -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Staircase areas: top priority</text></g>
+              <path class="fw ln" d="M160 460V400H240V340H320V280H400V220H480V160H560V460Z"/>
+              <path class="ln" d="M360 90v40"/>
+              <circle class="glow" cx="360" cy="220" r="104" data-a="glow" data-at="1.2"/>
+              <use href="#s-bulb" x="332" y="120" width="56" height="88"/>
+              <rect class="dark" x="0" y="80" width="960" height="460" data-a="out" data-at="1" data-d="1.2"/>
+              <g data-a="pop" data-at="2.2"><rect class="chip-y" x="640" y="240" width="200" height="46" rx="23"/><text class="tchip-d" x="740" y="270" text-anchor="middle">Top priority</text></g>
+            </g>
+
+            <!-- 3 cellars -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">All cellars lit</text></g>
+              <rect x="40" y="200" width="880" height="40" fill="url(#p-soil)"/>
+              <path class="ln" d="M40 200H920"/>
+              <rect class="fw ln" x="160" y="250" width="640" height="230"/>
+              <path class="ln" d="M320 250v24M640 250v24"/>
+              <circle class="glow" cx="320" cy="340" r="110" data-a="glow" data-at="1.3"/><circle class="glow" cx="640" cy="340" r="110" data-a="glow" data-at="1.6"/>
+              <use href="#s-bulb" x="296" y="270" width="48" height="76"/><use href="#s-bulb" x="616" y="270" width="48" height="76"/>
+              <rect class="dark" x="160" y="250" width="640" height="230" data-a="out" data-at="1" data-d="1.2"/>
+              <text class="td" x="480" y="180" text-anchor="middle" data-a="fade" data-at=".4">Ground level</text>
+              <text class="tb" x="480" y="520" text-anchor="middle" data-a="fade" data-at="2.2">Cellar</text>
+            </g>
+
+            <!-- 4 storage areas except POL -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Material storage areas</text></g>
+              <path class="lnd" d="M40 460H920"/>
+              <g data-a="up" data-at=".2"><rect class="fw ln" x="80" y="200" width="360" height="260"/><rect class="fa ln" x="120" y="380" width="80" height="80"/><rect class="fa ln" x="210" y="380" width="80" height="80"/><rect class="fa ln" x="160" y="300" width="80" height="80"/></g>
+              <circle class="glow" cx="340" cy="270" r="70" data-a="glow" data-at="1"/>
+              <use href="#s-bulb" x="318" y="220" width="44" height="70" data-a="pop" data-at=".8"/>
+              <use href="#s-ok" x="380" y="140" width="50" height="50" data-a="pop" data-at="1.6"/>
+              <g data-a="up" data-at=".5"><rect class="fw ln" x="520" y="200" width="360" height="260"/><use href="#s-drum" x="560" y="350" width="70" height="100"/><use href="#s-drum" x="640" y="350" width="70" height="100"/></g>
+              <text class="td" x="700" y="250" text-anchor="middle" data-a="fade" data-at="1">Diesel and petrol</text>
+              <use href="#s-bulb" x="780" y="270" width="44" height="70" data-a="pop" data-at="1.8"/>
+              <use href="#s-no" x="760" y="262" width="84" height="84" data-a="pop" data-at="2.2"/>
+              <text class="tb" x="700" y="180" text-anchor="middle" data-a="fade" data-at="2.6">No lighting here</text>
+            </g>
+          </svg>
+
+          <svg class="lsvg" data-l="10" viewBox="0 0 960 540" role="img" aria-label="Animated drawing for fire extinguishers" hidden>
+            <rect class="bg" width="960" height="540"/><rect width="960" height="540" fill="url(#p-grid)"/>
+
+            <!-- 1 where extinguishers are provided -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Fire extinguishers provided in</text></g>
+              <g data-a="up" data-at=".3"><rect class="card" x="60" y="130" width="196" height="300" rx="14"/><rect class="fw ln" x="90" y="170" width="136" height="90"/><use href="#s-ext" x="132" y="270" width="52" height="118"/><text class="tchip" x="158" y="412" text-anchor="middle">Site office</text></g>
+              <g data-a="up" data-at=".8"><rect class="card" x="276" y="130" width="196" height="300" rx="14"/><use href="#s-drum" x="300" y="180" width="60" height="84"/><use href="#s-drum" x="366" y="180" width="60" height="84"/><use href="#s-ext" x="348" y="270" width="52" height="118"/><text class="tchip" x="374" y="412" text-anchor="middle">POL storage</text></g>
+              <g data-a="up" data-at="1.3"><rect class="card" x="492" y="130" width="196" height="300" rx="14"/><rect class="fa ln" x="516" y="200" width="148" height="20"/><use href="#s-shav" x="520" y="226" width="100" height="44"/><use href="#s-ext" x="564" y="270" width="52" height="118"/><text class="tchip" x="590" y="412" text-anchor="middle">Carpentry yard</text></g>
+              <g data-a="up" data-at="1.8"><rect class="card" x="708" y="130" width="196" height="300" rx="14"/><use href="#s-paint" x="736" y="176" width="66" height="74"/><use href="#s-paint" x="806" y="176" width="66" height="74"/><use href="#s-ext" x="780" y="270" width="52" height="118"/><text class="tchip" x="806" y="412" text-anchor="middle">Paint storage</text></g>
+            </g>
+
+            <!-- 2 instruction manual on site -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Instruction manual on-site</text></g>
+              <use href="#s-ext" x="220" y="140" width="120" height="274" data-a="up" data-at=".2"/>
+              <use href="#s-book" x="420" y="190" width="300" height="206" data-a="right" data-at="1"/>
+              <text class="tb" x="570" y="440" text-anchor="middle" data-a="fade" data-at="1.8">Kept with the extinguishers</text>
+            </g>
+
+            <!-- 3 training -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Training by suppliers</text></g>
+              <path class="lnd" d="M40 460H920" data-a="draw"/>
+              <use href="#s-worker" x="90" y="220" width="96" height="240" data-a="right" data-at=".2"/>
+              <use href="#s-ext" x="196" y="320" width="50" height="114" data-a="pop" data-at=".6"/>
+              <text class="td" x="140" y="200" text-anchor="middle" data-a="fade" data-at=".8">Supplier</text>
+              <use href="#s-worker" x="330" y="260" width="80" height="200" data-a="up" data-at="1.2"/>
+              <text class="ty" x="370" y="232" text-anchor="middle" data-a="fade" data-at="1.4">Project manager</text>
+              <use href="#s-worker" x="450" y="290" width="68" height="170" data-a="up" data-at="1.6"/>
+              <use href="#s-worker" x="530" y="290" width="68" height="170" data-a="up" data-at="1.7"/>
+              <use href="#s-worker" x="610" y="290" width="68" height="170" data-a="up" data-at="1.8"/>
+              <use href="#s-worker" x="690" y="290" width="68" height="170" data-a="up" data-at="1.9"/>
+              <use href="#s-worker" x="770" y="290" width="68" height="170" data-a="up" data-at="2"/>
+              <text class="tb" x="664" y="278" text-anchor="middle" data-a="fade" data-at="2.4">At least 5 site supervisory personnel</text>
+            </g>
+
+            <!-- 4 AMC -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Annual Maintenance Contract</text></g>
+              <g data-a="up" data-at=".2"><rect class="card" x="150" y="120" width="300" height="340" rx="14"/><text class="tbig" x="300" y="200" text-anchor="middle">AMC</text><path class="lnd" d="M190 240h220M190 272h220M190 304h180M190 336h200"/></g>
+              <use href="#s-ext" x="560" y="150" width="110" height="250" data-a="up" data-at=".8"/>
+              <g data-a="pop" data-at="1.6"><rect class="fw ln" x="690" y="230" width="170" height="80" rx="8"/><text class="td" x="706" y="262">Expiry date</text><text class="tb" x="706" y="292">Checked</text></g>
+              <g data-a="pop" data-at="2.2"><rect class="chip-y" x="560" y="374" width="300" height="46" rx="23"/><text class="tchip-d" x="710" y="404" text-anchor="middle">Regular inspection</text></g>
+              <use href="#s-ok" x="380" y="380" width="56" height="56" data-a="pop" data-at="2.6"/>
+            </g>
+          </svg>
+
+          <svg class="lsvg" data-l="11" viewBox="0 0 960 540" role="img" aria-label="Animated drawing for cleanliness on site" hidden>
+            <rect class="bg" width="960" height="540"/><rect width="960" height="540" fill="url(#p-grid)"/>
+
+            <!-- 1 access roads free -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Access roads always free</text></g>
+              <path class="fbp2" d="M40 470L380 200H580L920 470Z" data-a="fade"/>
+              <path class="lnw" d="M480 200V470" style="stroke-dasharray:24 20" data-a="draw" data-at=".2"/>
+              <rect class="fw ln" x="400" y="120" width="160" height="80" data-a="pop" data-at=".5"/>
+              <text class="td" x="480" y="168" text-anchor="middle" data-a="fade" data-at=".7">Site office</text>
+              <g data-a="pop out" data-at="1 2.2"><rect class="fa ln" x="420" y="330" width="70" height="50"/><rect class="fa ln" x="520" y="400" width="60" height="44"/><path class="fw ln" d="M360 430l20-30 30 10 20 20z"/></g>
+              <use href="#s-ok" x="700" y="230" width="64" height="64" data-a="pop" data-at="2.8"/>
+            </g>
+
+            <!-- 2 stack height 1.5 m -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Stack height</text></g>
+              <path class="lnd" d="M40 460H920" data-a="draw"/>
+              <rect class="fa ln" x="300" y="400" width="100" height="60" data-a="up" data-at=".3"/><rect class="fa ln" x="400" y="400" width="100" height="60" data-a="up" data-at=".4"/>
+              <rect class="fa ln" x="300" y="340" width="100" height="60" data-a="up" data-at=".6"/><rect class="fa ln" x="400" y="340" width="100" height="60" data-a="up" data-at=".7"/>
+              <rect class="fa ln" x="300" y="280" width="100" height="60" data-a="up" data-at=".9"/><rect class="fa ln" x="400" y="280" width="100" height="60" data-a="up" data-at="1"/>
+              <path class="lny" d="M240 280H600" style="stroke-dasharray:10 8;stroke-width:3" data-a="draw" data-at="1.4"/>
+              <path class="dim" d="M560 280V460M548 280h24M548 460h24" data-a="draw" data-at="1.6"/>
+              <text class="tbig" x="590" y="384" data-a="pop" data-at="2">1.5 m</text>
+              <text class="td" x="590" y="414" data-a="fade" data-at="2.2">only</text>
+            </g>
+
+            <!-- 3 cement bags 10 high -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Cement bags: 10 high only</text></g>
+              <path class="lnd" d="M40 470H920" data-a="draw"/>
+              <use href="#s-bag" x="320" y="434" width="200" height="36" data-a="down" data-at=".2" data-d=".4"/>
+              <use href="#s-bag" x="320" y="398" width="200" height="36" data-a="down" data-at=".4" data-d=".4"/>
+              <use href="#s-bag" x="320" y="362" width="200" height="36" data-a="down" data-at=".6" data-d=".4"/>
+              <use href="#s-bag" x="320" y="326" width="200" height="36" data-a="down" data-at=".8" data-d=".4"/>
+              <use href="#s-bag" x="320" y="290" width="200" height="36" data-a="down" data-at="1" data-d=".4"/>
+              <use href="#s-bag" x="320" y="254" width="200" height="36" data-a="down" data-at="1.2" data-d=".4"/>
+              <use href="#s-bag" x="320" y="218" width="200" height="36" data-a="down" data-at="1.4" data-d=".4"/>
+              <use href="#s-bag" x="320" y="182" width="200" height="36" data-a="down" data-at="1.6" data-d=".4"/>
+              <use href="#s-bag" x="320" y="146" width="200" height="36" data-a="down" data-at="1.8" data-d=".4"/>
+              <use href="#s-bag" x="320" y="110" width="200" height="36" data-a="down" data-at="2" data-d=".4"/>
+              <text class="tbig" x="580" y="300" data-a="pop" data-at="2.6">10 bags</text>
+              <text class="td" x="580" y="330" data-a="fade" data-at="2.8">maximum height</text>
+            </g>
+
+            <!-- 4 H-frames -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">H-frames stacked cleanly</text></g>
+              <path class="lnd" d="M40 460H920" data-a="draw"/>
+              <use href="#s-hframe" x="220" y="300" width="120" height="140" data-a="right" data-at=".3"/>
+              <use href="#s-hframe" x="250" y="290" width="120" height="140" data-a="right" data-at=".6"/>
+              <use href="#s-hframe" x="280" y="280" width="120" height="140" data-a="right" data-at=".9"/>
+              <use href="#s-hframe" x="310" y="270" width="120" height="140" data-a="right" data-at="1.2"/>
+              <rect class="fa ln" x="200" y="440" width="260" height="20" data-a="grow-x" data-at=".1"/>
+              <use href="#s-ok" x="560" y="250" width="64" height="64" data-a="pop" data-at="2"/>
+            </g>
+
+            <!-- 5 debris yard cleared -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Debris and debris yard cleared</text></g>
+              <path class="lnd" d="M40 440H920" data-a="draw"/>
+              <rect class="zone" x="120" y="240" width="340" height="200" data-a="draw" data-at=".2"/>
+              <path class="fw ln" d="M150 440q70-150 150-70 50-60 130 70z" data-a="grow-y out" data-at=".6 2.4"/>
+              <use href="#s-tractor" x="540" y="310" width="260" height="130" data-a="right" data-at="1.4"/>
+              <use href="#s-cal" x="600" y="140" width="80" height="80" data-a="pop" data-at="2"/>
+              <text class="tb" x="700" y="190" data-a="fade" data-at="2.2">At regular intervals</text>
+            </g>
+
+            <!-- 6 warning boards -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Visible safety/ warning boards</text></g>
+              <g data-a="down" data-at=".2"><path class="fr" d="M130 130h80l40 40v80l-40 40h-80l-40-40v-80z"/><text x="170" y="222" text-anchor="middle" style="fill:#fff;font:800 34px var(--display)">STOP</text></g>
+              <g data-a="down" data-at=".6"><rect class="fy" x="300" y="130" width="300" height="160" rx="10"/><text class="tchip-d" x="450" y="196" text-anchor="middle">WEARING OF HELMETS</text><text class="tchip-d" x="450" y="226" text-anchor="middle">MANDATORY ON SITE</text></g>
+              <g data-a="down" data-at="1"><rect class="fy" x="650" y="130" width="230" height="160" rx="10"/><text class="tchip-d" x="765" y="206" text-anchor="middle">STAY AWAY</text></g>
+              <g data-a="down" data-at="1.4"><rect class="fy" x="190" y="320" width="300" height="150" rx="10"/><text class="tchip-d" x="340" y="384" text-anchor="middle">DO NOT ENTER</text><text class="tchip-d" x="340" y="414" text-anchor="middle">WITHOUT A HELMET</text></g>
+              <g data-a="down" data-at="1.8"><rect class="fy" x="530" y="320" width="230" height="150" rx="10"/><text class="tchip-d" x="645" y="402" text-anchor="middle">HOIST AT WORK</text></g>
+            </g>
+          </svg>
+
+          <svg class="lsvg" data-l="12" viewBox="0 0 960 540" role="img" aria-label="Animated drawing for check points with the project manager" hidden>
+            <rect class="bg" width="960" height="540"/><rect width="960" height="540" fill="url(#p-grid)"/>
+
+            <!-- 1 grinding safety gear -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Grinding machines</text></g>
+              <path class="lnd" d="M40 460H920" data-a="draw"/>
+              <use href="#s-worker" x="250" y="160" width="120" height="300" data-a="up" data-at=".2"/>
+              <use href="#s-goggles" x="260" y="226" width="100" height="43" data-a="down" data-at="1.2"/>
+              <use href="#s-glove" x="226" y="330" width="50" height="69" data-a="pop" data-at="1.6"/>
+              <use href="#s-grinder" x="390" y="300" width="200" height="110" data-a="right" data-at=".6"/>
+              <path class="lny" d="M420 410l-30 30M440 412l-14 40M406 400l-44 14" data-a="wave" data-at="1"/>
+              <text class="tb" x="660" y="250" data-a="fade" data-at="2.2">Proper safety gear</text>
+            </g>
+
+            <!-- 2 saw cum planer danger -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Electric saw cum planing machine</text></g>
+              <path class="lnd" d="M40 460H920" data-a="draw"/>
+              <rect class="fw ln" x="160" y="300" width="460" height="40" data-a="grow-x" data-at=".2"/>
+              <path class="ln thick" d="M190 340v120M590 340v120" data-a="grow-y" data-at=".3"/>
+              <use href="#s-saw" x="230" y="200" width="140" height="140" data-a="pop" data-at=".7"/>
+              <rect class="fbp2 ln" x="450" y="286" width="120" height="20" rx="4" data-a="pop" data-at=".9"/>
+              <text class="td" x="300" y="190" text-anchor="middle" data-a="fade" data-at="1.1">Saw in action</text>
+              <text class="td" x="510" y="270" text-anchor="middle" data-a="fade" data-at="1.3">Planing device open</text>
+              <use href="#s-warn" x="680" y="200" width="120" height="108" data-a="pulse" data-at="1.8"/>
+              <text class="tb" x="740" y="350" text-anchor="middle" data-a="fade" data-at="2.4">Extreme danger</text>
+            </g>
+
+            <!-- 3 guidelines -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Guidelines to adhere to</text></g>
+              <path class="lnd" d="M40 460H600"/>
+              <rect class="fw ln" x="80" y="300" width="460" height="40"/>
+              <path class="ln thick" d="M110 340v120M510 340v120"/>
+              <use href="#s-saw" x="150" y="200" width="140" height="140"/>
+              <rect class="fbp2 ln" x="370" y="286" width="120" height="20" rx="4"/>
+              <path class="fa ln" d="M140 270a80 80 0 0 1 160 0v30H140z" data-a="down" data-at=".6"/>
+              <rect class="fa ln" x="362" y="276" width="136" height="24" rx="4" data-a="down" data-at="1.4"/>
+              <use href="#s-ext" x="540" y="330" width="56" height="128" data-a="pop" data-at="3"/>
+              <g data-a="left" data-at="1"><use href="#s-ok" x="630" y="140" width="32" height="32"/><text class="t" x="672" y="163">Cover to the saw blade</text></g>
+              <g data-a="left" data-at="1.8"><use href="#s-ok" x="630" y="200" width="32" height="32"/><text class="t" x="672" y="223">Cover to planing device</text></g>
+              <g data-a="left" data-at="2.4"><use href="#s-ok" x="630" y="260" width="32" height="32"/><text class="t" x="672" y="283">Cleaned and covered</text><text class="td" x="672" y="306">when not in use</text></g>
+              <g data-a="left" data-at="3"><use href="#s-ok" x="630" y="340" width="32" height="32"/><text class="t" x="672" y="363">One fire extinguisher</text></g>
+            </g>
+
+            <!-- 4 checklists -->
+            <g class="scene">
+              <g data-a="left"><rect class="sh-bar" x="48" y="42" width="8" height="32" rx="2"/><text class="tsh" x="68" y="68">Check lists</text></g>
+              <use href="#s-clip" x="140" y="110" width="240" height="300" data-a="up" data-at=".2"/>
+              <use href="#s-ok" x="176" y="192" width="40" height="40" data-a="pop" data-at="1"/>
+              <use href="#s-ok" x="176" y="252" width="40" height="40" data-a="pop" data-at="1.4"/>
+              <use href="#s-ok" x="176" y="312" width="40" height="40" data-a="pop" data-at="1.8"/>
+              <text class="tb" x="480" y="150" data-a="fade" data-at=".6">Internal checklists are there</text>
+              <g data-a="pop" data-at="1"><rect class="chip" x="480" y="180" width="300" height="46" rx="23"/><text class="tchip" x="630" y="210" text-anchor="middle">for your use</text></g>
+              <g data-a="pop" data-at="1.5"><rect class="chip" x="480" y="242" width="300" height="46" rx="23"/><text class="tchip" x="630" y="272" text-anchor="middle">for safety</text></g>
+              <g data-a="pop" data-at="2"><rect class="chip" x="480" y="304" width="300" height="46" rx="23"/><text class="tchip" x="630" y="334" text-anchor="middle">for saving time</text></g>
+              <g data-a="pop" data-at="2.5"><rect class="chip-y" x="480" y="366" width="300" height="46" rx="23"/><text class="tchip-d" x="630" y="396" text-anchor="middle">for saving money</text></g>
+            </g>
+          </svg>
+          <div class="tblock" aria-hidden="true">
+            <span>Dhinwa</span><span>Technology Manual</span>
+            <span>Sheet</span><span><b id="tbSheet">1.1</b></span>
+            <span>Scene</span><span id="tbScene">1 of 7</span>
+          </div>
+
+          <button class="start" id="start" type="button">
+            <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z" fill="currentColor"/></svg>Play lesson</span>
+          </button>
+
+          <div class="endcard" id="endc" hidden>
+            <div class="endbox">
+              <span class="k">✓</span>
+              <strong>Lesson complete</strong>
+              <button class="pill pill-y" id="endNext" type="button">Next lesson: <span id="endNextT"></span></button>
+              <button class="pill pill-o" id="again" type="button">Watch again</button>
+            </div>
+          </div>
+
+          <div class="controls">
+            <div class="cg">
+              <button class="ib" id="prevL" type="button" aria-label="Previous lesson"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h2.5v14H6zM20 5v14L9.5 12z" fill="currentColor"/></svg></button>
+              <button class="ib main" id="pp" type="button" aria-label="Play">
+                <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z" fill="currentColor"/></svg>
+                <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h4v16H6zM14 4h4v16h-4z" fill="currentColor"/></svg>
+              </button>
+              <button class="ib" id="nextL" type="button" aria-label="Next lesson"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 5H18v14h-2.5zM4 5v14l10.5-7z" fill="currentColor"/></svg></button>
+            </div>
+            <button class="ib cg-x" id="rp" type="button" aria-label="Replay lesson"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V1L7 6l5 5V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7z" fill="currentColor"/></svg></button>
+            <div class="segs" id="segs" role="group" aria-label="Jump to a point">
+              <button class="seg" type="button" aria-label="Point 1"><i></i></button><button class="seg" type="button" aria-label="Point 2"><i></i></button>
+              <button class="seg" type="button" aria-label="Point 3"><i></i></button><button class="seg" type="button" aria-label="Point 4"><i></i></button>
+              <button class="seg" type="button" aria-label="Point 5"><i></i></button><button class="seg" type="button" aria-label="Point 6"><i></i></button>
+              <button class="seg" type="button" aria-label="Point 7"><i></i></button><button class="seg" type="button" aria-label="Point 8"><i></i></button>
+              <button class="seg" type="button" aria-label="Point 9"><i></i></button><button class="seg" type="button" aria-label="Point 10"><i></i></button>
+              <button class="seg" type="button" aria-label="Point 11"><i></i></button><button class="seg" type="button" aria-label="Point 12"><i></i></button>
+              <button class="seg" type="button" aria-label="Point 13"><i></i></button><button class="seg" type="button" aria-label="Point 14"><i></i></button>
+              <button class="seg" type="button" aria-label="Point 15"><i></i></button>
+            </div>
+            <span class="tm" id="tm">0:00 / 0:00</span>
+            <select class="sp" id="sp" aria-label="Speed"><option value="0.75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option></select>
+            <button class="tg" id="nr" type="button" aria-pressed="false">Narrate</button>
+            <button class="ib" id="fs" type="button" aria-label="Full screen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="2.2"/></svg></button>
+          </div>
+        </div>
+        <p class="rot">For a bigger picture, tap full screen or turn your phone sideways.</p>
+      </section>
+
+      <section class="manual" aria-labelledby="manualTitle">
+        <h2 id="manualTitle">Manual text</h2>
+        <p class="manual-note">Word for word from the Dhinwa Construction Engineering Technology Manual. The point playing now is highlighted; tap any point to jump to it.</p>
+
+        <ol class="mtext" data-l="0">
+          <li>Personnel are to be aware of what is required of them</li>
+          <li>Areas of responsibility are defined and lines of communication are clear</li>
+          <li>People take that responsibility seriously and take the appropriate action when they see or foresee a problem</li>
+          <li>Be familiar with codes of practices and be able to implement them</li>
+          <li>Review internal procedures (i.e. check lists) and use them</li>
+          <li>Don’t allow the use of scaffold or scaffolding practices on site that you would not be happy using yourself</li>
+          <li>Think Safety and Work Safely</li>
+        </ol>
+
+        <ol class="mtext" data-l="1" hidden>
+          <li>To achieve “zero accident” site, the following precautions and protective equipment are necessary:</li>
+          <li>Personal protective equipment (PPE) includes articles such as eye, face, head and extremity protection; protective clothing; respiratory devices; protective shields; and barriers for mechanical, chemical, or other workplace environmental hazards.</li>
+          <li><span><b>Head protection.</b> Protective helmets (hard hats) must be worn by employees who work in areas where there is a possibility of head injury from impact, falling or flying objects, or electricity.</span></li>
+          <li><span><b>Hearing protection.</b> Hearing protection must be worn when noise levels cannot be reduced by engineering or other means.</span></li>
+          <li><span><b>Eye and face protection.</b> Eye and face protection must be used to protect against physical, or chemical agents. Protection must be reasonably comfortable, fit snugly, and not unduly interfere with employee movement. Employees whose vision requires the use of spectacles, shall be protected by goggles. Use eye goggles/ protective cover on face while hacking, welding, glass cutting, chipping or drilling operations</span></li>
+          <li><span><b>Respiratory protection.</b> Construction sites must have a written plan for procedures to select and use respirators. Respirators must be regularly cleaned and disinfected, stored properly, and inspected. Users must be properly trained in selection, use, and maintenance of respirators.</span></li>
+          <li><span><b>Safety belts and lifelines.</b> If safety belts, lifelines, and lanyards have been used for inservice loading, they must immediately be removed for service in employee safeguarding. Ensure that these personnel at all times are secured to the building.</span></li>
+          <li><span><b>Safety nets.</b> Safety nets must be provided if workplaces are higher than 25 feet above the surface and where ladders, scaffolds or other safety equipment is impractical.</span></li>
+          <li><span><b>Workers over or near water.</b> Life jackets or buoyant work vests must be provided to employees where the danger of drowning exists. These must be inspected for defects before and after each use.</span></li>
+        </ol>
+
+        <ol class="mtext" data-l="2" hidden>
+          <li>Workers below 18 years of age should not be allowed to work at site</li>
+          <li><span>When workers on the construction site are exposed to vertical drops of 6 feet or more, provide fall protection in one of three ways before work begins:
+            <ul><li>Placing guardrails around the hazard area.</li><li>Deploying safety nets.</li><li>Providing personal fall arrest systems for each employee. The belts should be always tied above the person.</li></ul></span></li>
+          <li>Openings in the slab should be barricaded / closed at all levels. For high rise building use safety nets at appropriate locations. Clear the debris fallen on the net once in 2 days. Also, tighten the net, once in a fortnight.</li>
+          <li>Do not allow work in vertical alignment at edges, stairwell, and lift well or other openings in the slab without close supervision.</li>
+          <li>Secure working platform planks with ropes to the scaffolding. The thickness of the working platform if in wood should not be less than 2”. Check the planks for splits.</li>
+          <li>Place scaffolding on firm even ground and check periodically (twice a week). Get the scaffolding checked for potentially weaker zones and horizontal bracing. Supports through toilet ventilators get inadvertently removed while tiling and do not get replaced.</li>
+          <li>Dowel rods should not be left naked at the body level. It is good practice to cover them with thick hessain cloth and POP.</li>
+        </ol>
+
+        <ol class="mtext" data-l="3" hidden>
+          <li>Trenches 5 feet deep or greater require a protective system. Trenches 20 feet deep or greater require that a registered professional engineer design the protective system.</li>
+          <li class="mh">Protective Systems for Trenches</li>
+          <li>Sloping protects workers by cutting back the trench wall at an angle inclined away from the excavation.</li>
+          <li>Shoring protects workers by installing wooden, aluminium, hydraulic or other types of supports to prevent soil movement.</li>
+          <li>Shielding protects workers by using trench boxes or other types of supports to prevent soil cave-ins.</li>
+        </ol>
+
+        <ol class="mtext" data-l="4" hidden>
+          <li>Inspect trenches at the start of each shift, following a rainstorm or after any other hazardous event.</li>
+          <li>Test for low oxygen, hazardous fumes and toxic gases before entering a trench.</li>
+          <li>Keep heavy equipment and excavation spoils at least two feet away from the trench edge.</li>
+          <li>Provide stairways, ladders, ramps or other safe means of access in all trenches 4 feet or deeper.</li>
+          <li>Use strong and well-secured ladders for access. Maintain ladders free of oil, grease and other slipping hazards. Tie the top end of the ladder securely.</li>
+          <li>Use industrial safety pin &amp; plugs. Use insulated &amp; safely secured electrical conduits for transmission.</li>
+          <li>Periodically test the lifting machinery such as cranes and hoists, and lifting gear such as ropes and shackles.</li>
+          <li>Inspection and rectification of access facilities such as scaffolds and ladders.</li>
+          <li>Provide adequate artificial lighting wherever natural light is inadequate.</li>
+          <li>Provide appropriate fire fighting equipment at potentially hazardous locations. Check fire-fighting equipment for date of expiry and ensure that all are conversant to use them.</li>
+          <li>Remove wooden shavings from carpentry yard every day.</li>
+          <li>Use face mask, hand gloves &amp; eye protection while handling chemicals.</li>
+          <li>Take measures to control the menace of mosquito, flies, rodents, snakes, termites, bees etc.</li>
+          <li>Keep first aid kit and snake bite kit in the site for emergencies and train as many people as possible to use them.</li>
+          <li>Avoid lady workers working in potentially dangerous locations like sloping roofs.</li>
+        </ol>
+
+        <ol class="mtext" data-l="5" hidden>
+          <li>Conduct mock emergency drill once in a month to streamline the systems of fire fighting, attending a minor injury, or taking a person with serious injury to the nearest hospital.</li>
+          <li>Educate workers on safe work practices on a regular basis. Emergency escape procedures, evaluation plans and emergency escape route shall be well-defined.</li>
+          <li>Keep a uniform pace of work and train workers to be always on alert.</li>
+          <li>Names of persons or departments who can be contacted in case of emergencies should be displayed.</li>
+          <li>Use adequate safety signs around the site to warn workers of potential danger.</li>
+          <li>Water sources like sumps to be covered or barricaded.</li>
+          <li>Good housekeeping of materials through proper method of stacking avoids accidents.</li>
+        </ol>
+
+        <ol class="mtext" data-l="6" hidden>
+          <li>Provide dustbin in common areas.</li>
+          <li>Clean debris accumulated regularly. Keep the site clean at all times.</li>
+          <li>Provide dust bins of capacity 150 litres per 5000sft of built up area.</li>
+          <li>Collect debris at a common point (debris yard) that is easily accessible to a tractor cum trailer. Shift the debris on a daily basis.</li>
+          <li>Stack materials required at site neatly, and away from heavy traffic areas.</li>
+          <li>Dedicate a team for house keeping and supervise their works on a daily basis. After structure is completed, allocate one person per 20,000 Sft of floor area for house keeping. During the construction of structure allocate one person per 30,000 Sft of floor area for the same purpose.</li>
+          <li>Preliminary cleaning is to be done by the concerned contractor/ tradesman. The housekeeping squad should do the general cleaning and carting of debris.</li>
+          <li>Stack granite slabs properly on level ground using MS stands to maintain balance on both sides.</li>
+          <li>Provide temporary doors with locks at entrances of apartments to reduce the area of liability for cleaning.</li>
+          <li>In apartments, the sand shifted for masonry / Plastering or filling should be stacked in a remote corner of the room with blocks circumventing the edges. The spreading of sand due to human movement is avoided.</li>
+          <li>Smoking, chewing tobacco is strictly prohibited at site.</li>
+          <li>Impose heavy penalty as a deterrent if the person is found littering, doing nuisance at site or not observing safety regulations.</li>
+        </ol>
+
+        <ol class="mtext" data-l="7" hidden>
+          <li>Wearing of safety helmets absolutely mandatory. Ensure entire construction site is hard-hatted.</li>
+          <li>Safety/ warning boards at vantage points to ensure the above.</li>
+          <li>Wearing of safety belts is compulsory.</li>
+          <li>Wearing of safety goggles and ear plugs for people working on shearing / grinding machines.</li>
+          <li>Wearing of gloves for all dangerous activities.</li>
+          <li>Wearing of gum boots during concreting.</li>
+          <li>Provision of stretcher and first aid kit on each site (for emergencies).</li>
+        </ol>
+
+        <ol class="mtext" data-l="8" hidden>
+          <li>Trenches are barricaded at 1m from the edge and to a height of 1m.</li>
+          <li>All staircases must be barricaded.</li>
+          <li>All lift shafts must be barricaded immediately after deshuttering.</li>
+          <li>Solid barricading in necessary areas with tape barricading done in additional areas.</li>
+        </ol>
+
+        <ol class="mtext" data-l="9" hidden>
+          <li>Entire site should be floodlit with halogen lamps.</li>
+          <li>Lighting on top priority on all staircase areas.</li>
+          <li>Lighting of all cellars.</li>
+          <li>Lighting in all material storage areas except where diesel and petrol is stored.</li>
+        </ol>
+
+        <ol class="mtext" data-l="10" hidden>
+          <li><span>Fire extinguishers provided in<ul><li>Site office</li><li>Diesel &amp; Petrol (POL) storage areas</li><li>Store for Wooden items/ Carpentry yard</li><li>Paint storage areas</li></ul></span></li>
+          <li>Instruction manual of fire extinguishers on-site.</li>
+          <li>Training of Project manager and at least 5 site supervisory personnel by suppliers.</li>
+          <li>Expiry date of fire extinguishers and regular inspection to form a part of the Annual Maintenance Contract (AMC).</li>
+        </ol>
+
+        <ol class="mtext" data-l="11" hidden>
+          <li>Access roads to site and office always to be maintained free</li>
+          <li>Stack all materials to a height of 1.5m only</li>
+          <li>Stack cement bags up to 10 bags high only</li>
+          <li>Stack all H-frames cleanly</li>
+          <li>Clear all debris and debris yard at regular intervals</li>
+          <li><span>Introduction of visible safety/ warning boards on site, such as below:<ul><li>STOP</li><li>WEARING OF HELMETS MANDATORY ON SITE</li><li>DO NOT ENTER WITHOUT A HELMET</li><li>STAY AWAY</li><li>HOIST AT WORK</li></ul></span></li>
+        </ol>
+
+        <ol class="mtext" data-l="12" hidden>
+          <li>Personnel working on grinding machines should use proper safety gear.</li>
+          <li>Operations of electric saw cum planing machines should be protected sufficiently. Most electric saws’ are delivered along with the planing devices. It is noticed that when the saw is in action, the planing devices are open and vice versa. This poses extreme danger to all operations.</li>
+          <li><span>Therefore, the following guidelines should be adhered to:<ul><li>Proper wooden/ metal cover to the saw blade at all times</li><li>Proper cover to planing device</li><li>When not in use, the cutting devices should be covered after duly cleaning them</li></ul>Provision of one fire extinguisher is essential</span></li>
+          <li><span><b>Check Lists</b><ul><li>Internal checklists are there for your use</li><li>Internal checklists are there for safety</li><li>Internal checklists are there for saving time</li><li>Internal checklists are there for saving money</li></ul></span></li>
+        </ol>
+      </section>
+    </main>
+  </div>
+</div>
+<script>
+/* Lessons 1 to 5 player. Reads the markup and data-a attributes above; it never writes HTML. */
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $=s=>document.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const svgs=$$('.lsvg'), heads=$$('.heads hgroup'), texts=$$('.mtext'), lessons=$$('.ls'), segs=$$('#segs .seg');
+const SHEETS=['1.1','1.1.1','1.1.1','1.1.1','1.1.1','1.1.1','1.1.2','1.2.1','1.2.2','1.2.3','1.2.4','1.2.5','1.2.6'];
+const ui={stage:$('#stage'),start:$('#start'),endc:$('#endc'),endNext:$('#endNext'),endNextT:$('#endNextT'),again:$('#again'),pp:$('#pp'),rp:$('#rp'),
+  prevL:$('#prevL'),nextL:$('#nextL'),tm:$('#tm'),sp:$('#sp'),nr:$('#nr'),fs:$('#fs'),tbSheet:$('#tbSheet'),tbScene:$('#tbScene'),mbarT:$('#mbarT')};
+let cur=-1, tl=null, starts=[], durs=[], point=-1, narrate=false, fresh=true;
+const pointsOf=i=>$$(':scope > li:not(.mh)',texts[i]);
+
+/* ---------- one animation per data-a token ---------- */
+function len(el){try{return Math.ceil(el.getTotalLength());}catch(e){return 600;}}
+function anim(t,el,a,at,d){
+  const o={transformOrigin:'50% 50%'};
+  switch(a){
+    case 'fade':t.from(el,{opacity:0,duration:d||.5},at);break;
+    case 'up':t.from(el,{opacity:0,y:40,duration:d||.6,ease:'power3.out'},at);break;
+    case 'down':t.from(el,{opacity:0,y:-120,duration:d||.8,ease:'bounce.out'},at);break;
+    case 'left':t.from(el,{opacity:0,x:-70,duration:d||.6,ease:'power3.out'},at);break;
+    case 'right':t.from(el,{opacity:0,x:90,duration:d||.7,ease:'power3.out'},at);break;
+    case 'pop':t.from(el,{...o,opacity:0,scale:0,duration:d||.5,ease:'back.out(2)'},at);break;
+    case 'draw':{const L=len(el);t.fromTo(el,{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:d||1,ease:'power2.inOut'},at);break;}
+    case 'grow-x':t.from(el,{scaleX:0,transformOrigin:'0% 50%',duration:d||.8,ease:'power2.out'},at);break;
+    case 'grow-y':t.from(el,{scaleY:0,transformOrigin:'50% 100%',duration:d||.8,ease:'power2.out'},at);break;
+    case 'pulse':t.from(el,{...o,opacity:0,scale:0,duration:.45,ease:'back.out(2)'},at);t.to(el,{...o,scale:1.12,duration:.4,yoyo:true,repeat:5,ease:'sine.inOut'},at+.5);break;
+    case 'ring':t.fromTo(el,{...o,scale:.6,opacity:.9},{scale:1.35,opacity:0,duration:1.4,repeat:2,ease:'power1.out'},at);break;
+    case 'wave':t.from(el,{opacity:0,duration:.2},at);t.to(el,{opacity:.15,duration:.35,yoyo:true,repeat:7},at+.2);break;
+    case 'float':t.from(el,{opacity:0,duration:.3},at);t.to(el,{y:-16,duration:.6,yoyo:true,repeat:5,ease:'sine.inOut'},at+.3);break;
+    case 'swing':t.from(el,{opacity:0,duration:.3},at);t.fromTo(el,{rotation:-6,transformOrigin:'50% 0%'},{rotation:6,duration:.9,yoyo:true,repeat:5,ease:'sine.inOut'},at);break;
+    case 'deflect':t.fromTo(el,{y:-160,opacity:1},{y:0,duration:.5,ease:'power2.in'},at);t.to(el,{x:150,y:-70,rotation:70,opacity:0,duration:.7,ease:'power2.out'},at+.5);break;
+    case 'lower':t.from(el,{y:-220,opacity:0,duration:1.5,ease:'power2.out'},at);break;
+    case 'out':t.to(el,{opacity:0,duration:d||.5},at);break;
+    case 'sweep':t.to(el,{x:280,opacity:0,duration:d||1,ease:'power2.in'},at);break;
+    case 'glow':t.from(el,{...o,opacity:0,scale:.3,duration:.8},at);t.to(el,{opacity:.5,duration:.6,yoyo:true,repeat:4},at+.8);break;
+    case 'waves':t.to(el,{x:-60,duration:1.6,yoyo:true,repeat:5,ease:'sine.inOut'},at);break;
+  }
+}
+
+/* ---------- build a lesson timeline ---------- */
+function build(i){
+  if(tl)tl.kill();
+  const svg=svgs[i],scenes=$$('.scene',svg),pts=pointsOf(i);
+  tl=gsap.timeline({paused:true,onUpdate:tick,onComplete:()=>{setPP(false);lessons[i].classList.add('done');showEnd(true);}});
+  gsap.set(scenes,{autoAlpha:0});starts=[];durs=[];let t0=0;
+  scenes.forEach((sc,k)=>{
+    const words=(pts[k]?pts[k].textContent:'').trim().split(/\s+/).length;
+    const dur=Math.min(17,Math.max(6,words*.42+2.5));starts.push(t0);durs.push(dur);
+    if(k>0)tl.to(sc,{autoAlpha:1,duration:.4},t0);
+    $$('[data-a]',sc).forEach(el=>{const as=el.dataset.a.split(' '),ats=(el.dataset.at||'0').split(' '),d=+el.dataset.d||0;
+      as.forEach((a,n)=>anim(tl,el,a,t0+.25+(+ats[n]||+ats[0]||0),reduce?.01:d));});
+    if(k<scenes.length-1)tl.to(sc,{autoAlpha:0,duration:.4},t0+dur-.4);
+    else tl.to({},{duration:.01},t0+dur);
+    t0+=dur;
+  });
+  const total=t0;
+  segs.forEach((s,k)=>{s.hidden=k>=scenes.length;if(k<scenes.length)s.style.flexGrow=durs[k];});
+  gsap.set(scenes[0],{autoAlpha:1});
+  /* poster: the first point fully drawn until Play is pressed */
+  point=-1;fresh=true;tl.seek(Math.max(0,durs[0]-.5));tick();
+}
+function setLesson(i,{play=false}={}){
+  if(i<0||i>=svgs.length)return;cur=i;
+  svgs.forEach((s,k)=>s.toggleAttribute('hidden',k!==i));heads.forEach((h,k)=>h.hidden=k!==i);texts.forEach((t,k)=>t.hidden=k!==i);
+  lessons.forEach((l,k)=>l.classList.toggle('on',k===i));
+  ui.prevL.disabled=i===0;ui.nextL.disabled=i===svgs.length-1;
+  ui.endNext.hidden=i===svgs.length-1;ui.endNextT.textContent=i<svgs.length-1?heads[i+1].querySelector('h1').textContent:'';
+  ui.tbSheet.textContent=SHEETS[i];ui.mbarT.textContent=heads[i].querySelector('h1').textContent;
+  showEnd(false);ui.start.hidden=false;setPP(false);if(window.speechSynthesis)speechSynthesis.cancel();
+  build(i);
+  try{history.replaceState(null,'','#lesson-'+(i+1));}catch(e){}
+  if(play)begin();
+}
+
+/* ---------- progress ---------- */
+const fmt=s=>Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');
+function tick(){if(!tl)return;const t=tl.time();let k=0;starts.forEach((s,n)=>{if(t>=s-.001)k=n;});
+  segs.forEach((s,n)=>{s.classList.toggle('done',n<k);if(n===k)gsap.set(s.firstElementChild,{scaleX:Math.min(1,(t-starts[k])/durs[k])});else if(n>k)gsap.set(s.firstElementChild,{scaleX:0});});
+  ui.tm.textContent=fmt(t)+' / '+fmt(tl.duration());
+  if(k!==point){point=k;const pts=pointsOf(cur);
+    pts.forEach((p,n)=>p.classList.toggle('now',n===k));
+    $$('.pt',lessons[cur]).forEach((b,n)=>{b.classList.toggle('now',n===k);b.classList.toggle('seen',n<k);});
+    ui.tbScene.textContent=`${k+1} of ${starts.length}`;
+    const li=pts[k];
+    if(narrate&&!tl.paused()&&li){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(li.textContent.replace(/\s+/g,' ').trim());u.lang='en-IN';speechSynthesis.speak(u);}
+  }}
+
+/* ---------- controls ---------- */
+function setPP(on){ui.pp.classList.toggle('playing',on);ui.pp.setAttribute('aria-label',on?'Pause':'Play');}
+function showEnd(on){ui.endc.hidden=!on;if(on&&!reduce)gsap.fromTo(ui.endc.firstElementChild,{opacity:0,y:16,scale:.96},{opacity:1,y:0,scale:1,duration:.45,ease:'back.out(1.6)'});}
+function inView(){const r=ui.stage.getBoundingClientRect(),bar=$('.mbar'),top=(bar&&getComputedStyle(bar).display!=='none'?bar.offsetHeight:0)+8;
+  if(r.top<top-2||r.bottom>innerHeight+2)window.scrollBy({top:r.top-top,behavior:reduce?'auto':'smooth'});}
+function begin(){ui.start.hidden=true;showEnd(false);inView();if(fresh||tl.progress()>=1){fresh=false;tl.restart();}else tl.play();setPP(true);}
+function jump(k){if(!tl||k>=starts.length)return;fresh=false;ui.start.hidden=true;showEnd(false);tl.seek(starts[k]+.01);tl.play();setPP(true);tick();inView();}
+ui.start.onclick=begin;
+ui.pp.onclick=()=>{if(tl.paused()||tl.progress()>=1)begin();else{tl.pause();setPP(false);if(window.speechSynthesis)speechSynthesis.cancel();}};
+ui.rp.onclick=()=>{fresh=false;ui.start.hidden=true;showEnd(false);tl.restart();setPP(true);};
+ui.again.onclick=ui.rp.onclick;
+ui.endNext.onclick=()=>setLesson(cur+1,{play:true});
+ui.prevL.onclick=()=>setLesson(cur-1,{play:!tl.paused()});
+ui.nextL.onclick=()=>setLesson(cur+1,{play:!tl.paused()});
+segs.forEach((s,k)=>s.onclick=()=>jump(k));
+ui.sp.onchange=e=>tl&&tl.timeScale(+e.target.value);
+if(!window.speechSynthesis)ui.nr.hidden=true;
+ui.nr.onclick=()=>{narrate=!narrate;ui.nr.setAttribute('aria-pressed',narrate);if(!narrate)speechSynthesis.cancel();};
+texts.forEach((t,i)=>pointsOf(i).forEach((li,k)=>li.addEventListener('click',()=>{if(i===cur)jump(k);})));
+lessons.forEach((l,i)=>{
+  l.querySelector('.ls-btn').onclick=()=>{if(i!==cur)setLesson(i);closeMenu();};
+  $$('.pt',l).forEach((b,k)=>b.onclick=()=>{if(i!==cur)setLesson(i);jump(k);closeMenu();});
+});
+
+/* full screen */
+function exitFs(){ui.stage.classList.remove('fs');const fe=document.fullscreenElement||document.webkitFullscreenElement;if(fe)(document.exitFullscreen||document.webkitExitFullscreen).call(document);}
+ui.fs.onclick=async()=>{const fe=document.fullscreenElement||document.webkitFullscreenElement;
+  if(fe||ui.stage.classList.contains('fs')){exitFs();return;}
+  const req=ui.stage.requestFullscreen||ui.stage.webkitRequestFullscreen;
+  if(req){try{await req.call(ui.stage);try{await screen.orientation.lock('landscape');}catch(e){}}catch(e){ui.stage.classList.add('fs');}}else ui.stage.classList.add('fs');};
+document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement){try{screen.orientation.unlock();}catch(e){}}});
+
+/* menu and keys */
+const side=$('#side'),scrim=$('#scrim'),menuBtn=$('#menuBtn');
+function closeMenu(){side.classList.remove('show');scrim.classList.remove('show');menuBtn.setAttribute('aria-expanded','false');}
+menuBtn.onclick=()=>{const s=side.classList.toggle('show');scrim.classList.toggle('show',s);menuBtn.setAttribute('aria-expanded',s);};
+scrim.onclick=closeMenu;$('#sideClose').onclick=closeMenu;
+document.addEventListener('keydown',e=>{
+  if(e.key===' '&&e.target===document.body){e.preventDefault();ui.pp.click();}
+  if(e.key==='ArrowRight'&&e.target===document.body&&point<starts.length-1)jump(point+1);
+  if(e.key==='ArrowLeft'&&e.target===document.body&&point>0)jump(point-1);
+  if(e.key==='Escape'){closeMenu();ui.stage.classList.remove('fs');}});
+
+/* start on the lesson in the address, or lesson 1 */
+const m=location.hash.match(/lesson-(\d+)/);
+(document.fonts?document.fonts.ready:Promise.resolve()).then(()=>setLesson(m?Math.min(svgs.length-1,Math.max(0,+m[1]-1)):0));
+</script>
+</body>
+</html>
